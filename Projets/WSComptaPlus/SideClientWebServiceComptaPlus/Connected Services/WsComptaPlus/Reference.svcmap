@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2ecc155f-3717-4e00-ab81-912d032762e5" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:51171/ServiceComptaPlus.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ServiceComptaPlus.xsd" MetadataType="Schema" ID="e5fe21dd-6119-42ae-96bb-a78f5b9739ec" SourceId="1" SourceUrl="http://localhost:51171/ServiceComptaPlus.svc?xsd=xsd3" />
+    <MetadataFile FileName="ServiceComptaPlus1.xsd" MetadataType="Schema" ID="e78e597f-dae0-4198-b9c4-7e1ee921cdc1" SourceId="1" SourceUrl="http://localhost:51171/ServiceComptaPlus.svc?xsd=xsd2" />
+    <MetadataFile FileName="ServiceComptaPlus2.xsd" MetadataType="Schema" ID="25ebc63e-2f96-4f8f-9691-afce0aec4eb8" SourceId="1" SourceUrl="http://localhost:51171/ServiceComptaPlus.svc?xsd=xsd1" />
+    <MetadataFile FileName="ServiceComptaPlus3.xsd" MetadataType="Schema" ID="8efd96e8-0e48-49a4-bd28-b15b27fbe1ca" SourceId="1" SourceUrl="http://localhost:51171/ServiceComptaPlus.svc?xsd=xsd0" />
+    <MetadataFile FileName="ServiceComptaPlus.disco" MetadataType="Disco" ID="9a04d289-9370-42af-a077-dface660348e" SourceId="1" SourceUrl="http://localhost:51171/ServiceComptaPlus.svc?disco" />
+    <MetadataFile FileName="ServiceComptaPlus.wsdl" MetadataType="Wsdl" ID="74f469f4-d370-4be4-8ec4-d9aca27375f3" SourceId="1" SourceUrl="http://localhost:51171/ServiceComptaPlus.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

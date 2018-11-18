@@ -1,0 +1,35 @@
+﻿--------------------------------------------------------------------------------------------------
+Messages du Web Service Compta Plus.
+--------------------------------------------------------------------------------------------------
+Code				Message
+
+0					Opération réussie (Aucun message renvoyé).
+0+					Opération réussie partiellement (un message explication est renvoyé).
+
+500					Code Société inexistant.
+501					Une ou plusieurs valeurs du contrat ne sont pas respectées.
+505					La table n’existe pas dans la base de données.
+
+506					Impossible de modifier un enregistrement (enregistrement manquant).
+507					Impossible d’ajouter un enregistrement.
+508					Impossible de supprimer un enregistrement.
+509					Enregistrement existant.
+
+
+800					Base de données inaccessible.
+802					Table inaccessible.
+
+
+
+Interne au ERP :
+----------------
+
+1502				PCMN	: RecId ne correspond pas au format attendu.
+1503				PCMN	: MainAccountId a une longueur est incorrecte.
+1504				PCMN	: Name a une longueur est incorrecte.
+1505				PCMN	: Suspended n’est pas reconnu comme valeur booléen  (0-1 ou true-false).
+
+
+
+
+

@@ -1,0 +1,26 @@
+﻿--------------------------------------------------------------------------------------------------
+Développement : les différents version du projet DLL : SideWsComptaPlus.
+--------------------------------------------------------------------------------------------------
+
+Les informations de version pour un assembly se composent des quatre valeurs suivantes:
+
+•	Version principale		Est la version de la plateforme (Visual Studio)
+•	Version secondaire		Est la version du langage (C#)
+•	Numéro de build			Est la version du FrameWork
+•	Révision				Est le n° de modification
+
+
+Exemple : V17.04.452.001
+--------------------------------------------------------------------------------------------------
+
+24/09/2018		V17.04.452.000		MARCH	Démarrage du projet
+											Ajout : ClassWs - DAO - Helper - System - Tools
+
+26/10/2018		V17.04.452.005		MARCH	Ajout	Interface 22 - Gestion des périodes
+													Interface 34 - Synchro écritures comptables
+
+05/11/2018		V17.04.452.007		MARCH	Ajout/Modif Taxe (Mail du 05/11/2018 8h55 - NSI DZU)
+
+
+
+

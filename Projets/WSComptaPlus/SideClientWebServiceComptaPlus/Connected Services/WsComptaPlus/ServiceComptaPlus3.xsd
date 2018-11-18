@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:51171/ServiceComptaPlus.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/FrameWorkSide.Models.WebServices.Json" />
+  <xs:element name="GetListPCMN">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetListPCMNResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/FrameWorkSide.Models.WebServices.Json" minOccurs="0" name="GetListPCMNResult" nillable="true" type="q1:ArrayOfPcmnModelJson" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPCMNById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPCMNByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/FrameWorkSide.Models.WebServices.Json" minOccurs="0" name="GetPCMNByIdResult" nillable="true" type="q2:PcmnModelJson" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInfoWebService">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInfoWebServiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/FrameWorkSide.Models.WebServices.Json" minOccurs="0" name="GetInfoWebServiceResult" nillable="true" type="q3:WebServiceModelJson" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
