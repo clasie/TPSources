@@ -36,9 +36,8 @@
     <Reference Include="DevExpress.Data.v18.1, Version=18.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpo.v18.1, Version=18.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpo.v18.1.Extensions, Version=18.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="ERPDynamics, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dlls\ERPDynamics.dll</HintPath>
+    <Reference Include="ERPDynamics">
+      <HintPath>C:\Users\csi\Source\TEP\DLLs\ERPDynamics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\WebServiceComptaPlus\packages\MSTest.TestFramework.1.2.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
@@ -55,9 +54,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLs\SideClassWsComptaPlus.dll</HintPath>
     </Reference>
-    <Reference Include="SideFrameWork, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dlls\SideFrameWork.dll</HintPath>
+    <Reference Include="SideFrameWork">
+      <HintPath>C:\Users\csi\Source\TEP\DLLs\SideFrameWork.dll</HintPath>
     </Reference>
     <Reference Include="SideWsComptaPlus, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

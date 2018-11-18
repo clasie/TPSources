@@ -51,10 +51,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LatestTEP2\Simulateur\Side\SideWsComptaPlus\bin\Release\ERPDynamics.dll</HintPath>
     </Reference>
-    <Reference Include="LinkDynamicsWsComptaPlus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LinkDynamicsWsComptaPlus\bin\Debug\LinkDynamicsWsComptaPlus.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\csi\Source\TEP\DLLs\log4net.dll</HintPath>
@@ -68,10 +64,6 @@
       <HintPath>C:\Users\csi\Source\TEP\DLLs\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SideFrameWork, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null" />
-    <Reference Include="SideWsComptaPlus, Version=6.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SideWsComptaPlus\bin\Debug\SideWsComptaPlus.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -122,6 +114,16 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LinkDynamicsWsComptaPlus\LinkDynamicsWsComptaPlus.csproj">
+      <Project>{5bdacde3-5bd8-4608-aed6-9ea258558d08}</Project>
+      <Name>LinkDynamicsWsComptaPlus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SideWsComptaPlus\SideWsComptaPlus.csproj">
+      <Project>{22a372c2-db3c-44db-b0d0-8c153405d5cb}</Project>
+      <Name>SideWsComptaPlus</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
