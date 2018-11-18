@@ -18,6 +18,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSComptaPlus", "Projets\WSC
 		{5BDACDE3-5BD8-4608-AED6-9EA258558D08} = {5BDACDE3-5BD8-4608-AED6-9EA258558D08}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReferencedAssemblies", "ReferencedAssemblies", "{74882D0D-EFCD-4F1D-907A-6AC07E0984B9}"
+	ProjectSection(SolutionItems) = preProject
+		ReferencedAssemblies\DevExpress.Data.v18.1.dll = ReferencedAssemblies\DevExpress.Data.v18.1.dll
+		ReferencedAssemblies\DevExpress.Xpo.v18.1.dll = ReferencedAssemblies\DevExpress.Xpo.v18.1.dll
+		ReferencedAssemblies\ERPDynamics.dll = ReferencedAssemblies\ERPDynamics.dll
+		ReferencedAssemblies\ERPDynamicsOLD4.dll = ReferencedAssemblies\ERPDynamicsOLD4.dll
+		ReferencedAssemblies\log4net.dll = ReferencedAssemblies\log4net.dll
+		ReferencedAssemblies\log4net.xml = ReferencedAssemblies\log4net.xml
+		ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.dll = ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+		ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll = ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll
+		ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.xml = ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.xml
+		ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.xml = ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.xml
+		ReferencedAssemblies\Newtonsoft.Json.dll = ReferencedAssemblies\Newtonsoft.Json.dll
+		ReferencedAssemblies\Newtonsoft.Json.xml = ReferencedAssemblies\Newtonsoft.Json.xml
+		ReferencedAssemblies\SideClassWsComptaPlus.dll = ReferencedAssemblies\SideClassWsComptaPlus.dll
+		ReferencedAssemblies\SideFrameWork.dll = ReferencedAssemblies\SideFrameWork.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
