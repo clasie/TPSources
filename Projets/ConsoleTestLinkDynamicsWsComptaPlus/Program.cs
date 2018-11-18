@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace ConsoleTestLinkDynamicsWsComptaPlus
 {
     /// <summary>
-    /// Console to test LinkDynamicsWsComptaPlus
+    /// Console to test LinkDynamicsWsComptaPlus test git
     /// </summary>
     class Program
     {
