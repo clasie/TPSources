@@ -107,7 +107,7 @@ namespace ConsoleTestLinkDynamicsWsComptaPlus
                     log.Info(string.Format("Resultat loop on List<Response> {0}", message));
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)  
             {
                 log.Error(string.Format("Error {0}, Inner exception: {1}", ex.Message, ex.InnerException));
                 throw ex;
