@@ -47,23 +47,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ERPDynamics, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ERPDynamics, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\LatestTEP2\Simulateur\Side\SideWsComptaPlus\bin\Release\ERPDynamics.dll</HintPath>
+      <HintPath>..\..\ReferencedAssemblies\ERPDynamics.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\csi\Source\TEP\DLLs\log4net.dll</HintPath>
+      <HintPath>..\..\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
-      <HintPath>C:\Users\csi\Source\TEP\DLLs\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=3.19.8.16603, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\csi\Source\TEP\DLLs\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SideFrameWork, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="SideFrameWork, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\SideFrameWork.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
