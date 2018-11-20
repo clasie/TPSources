@@ -64,6 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SideClassWsComptaPlus">
+      <HintPath>..\..\..\..\..\..\SVNTP\TP\Sources\WebService\SideClassWsComptaPlus\bin\Debug\SideClassWsComptaPlus.dll</HintPath>
+    </Reference>
     <Reference Include="SideFrameWork, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedAssemblies\SideFrameWork.dll</HintPath>
@@ -111,6 +114,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\PublishToLocalIIS.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

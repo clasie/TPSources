@@ -32,6 +32,7 @@ using Response = SideWsComptaPlus.ModelBusiness.Response;
 using LinkDynamicsWsComptaPlus;
 using System.Linq;
 using System.Reflection;
+using System.Globalization;
 
 namespace WSComptaPlus
 {
@@ -49,6 +50,7 @@ namespace WSComptaPlus
         /// Obtenir l'environnement.
         /// </summary>
         private static string Environment => GetConfig("Environment", "");
+        private static TypeEnvironment EnvironmentEnum => (TypeEnvironment)Enum.Parse(typeof(TypeEnvironment), GetConfig("EnvironmentEnum", ""));
         /// <summary>
         /// Obtenir les informations de la configuration de l'environnement choisi
         /// </summary>

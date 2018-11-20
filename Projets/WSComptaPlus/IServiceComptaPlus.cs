@@ -197,7 +197,7 @@ namespace WSComptaPlus
             UriTemplate = "api/services/NVL_Dynamics_ERP/NVL_ERPTableReferenceService/syncCashDisc",
             BodyStyle = WebMessageBodyStyle.Bare,
             RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
-        List<ERPDynamics.Response> CashDisc(List<CashDiscERP> data);
+        List<ERPDynamics.Response> CashDisc(List<CashDiscERP> data);//test git
         #endregion
 
         #region BusRelSegmentGroup

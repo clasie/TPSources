@@ -133,7 +133,7 @@ namespace SimulateurErpWs
             // Envoi BusRelSegmentGroup
             var responseBusRelSegmentGroupERB = tableReferenceService.BusRelSegmentGroup(listBusRelSegmentGroupERB);
             //// Réponse
-            foreach (var element in responseCashDisc)
+            foreach (var element in responseBusRelSegmentGroupERB)
             {
                 Console.Write("Response : code: {0} - Message{1}  D365 : {2} ERP : {3}\n",
                     element.Code,

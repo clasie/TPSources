@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ServiceRequestAttribute.cs" />
+    <Compile Include="Contracts\BaseContract.cs" />
     <Compile Include="Contracts\BaseContractERP.cs" />
     <Compile Include="Contracts\BusRelSegmentGroupERB.cs" />
     <Compile Include="Contracts\CashDiscERP.cs" />
