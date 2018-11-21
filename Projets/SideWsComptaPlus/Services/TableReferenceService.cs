@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Web;
+using TokenHandler;
 using ClientConfiguration = SideWsComptaPlus.Tools.ClientConfiguration;
 using ServiceRequestAttribute = SideWsComptaPlus.Attributes.ServiceRequestAttribute;
 
@@ -196,6 +199,7 @@ namespace SideWsComptaPlus.Services
                 //httpWebRequest.Timeout = (120);
                 httpWebRequest.ContentType = "application/json; charset=utf-8; ";
                 httpWebRequest.Method = "POST";
+                httpWebRequest.Headers.Add("Authorization", "Bearer " + "123456789");
                 var json = JsonHelp.JsonSerialize(dRequest);
 
                 // Envoyer les données au service.
@@ -302,8 +306,6 @@ namespace SideWsComptaPlus.Services
 
         #endregion
 
-
-
         #region Les interfaces (Métiers)
 
         #region CashDiscERP
@@ -314,6 +316,8 @@ namespace SideWsComptaPlus.Services
         /// <returns></returns>
         public List<ModelBusiness.Response> CashDisc(List<CashDiscERP> dobject)
         {
+            //Token protection
+            //todo
             return CallServiceERP<CashDiscERP, ModelBusiness.Response>(dobject);
         }
         #endregion
@@ -330,6 +334,28 @@ namespace SideWsComptaPlus.Services
         }
         #endregion
 
+        #region Login
+        /// <summary>
+        /// Interface Business  :   CashDiscERP
+        /// </summary>
+        /// <param name="dobject"></param>
+        /// <returns></returns>
+        public List<TokenHandler.Models.LoginResponse> Login(List<TokenHandler.Models.LoginRequest> dobject)
+        {
+            //Test if Token
+            TokenHandler.Token th = new Token();
+            HttpRequestMessage httpRequestMessage = HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage;
+
+            //var result = th.SendAsyncAccess(httpRequestMessage,null);
+
+            //test if user exists
+            //to do
+            var tokenCreated = new Token().createToken("myuser");
+            string concat = tokenCreated; // "From WS -> UN: " +  dobject.FirstOrDefault().Username + " PW: " + dobject.FirstOrDefault().Password;
+            //generates a KEY and get it back
+            return new List<TokenHandler.Models.LoginResponse>() { new TokenHandler.Models.LoginResponse { Token = concat } };
+        }
+        #endregion
 
         #endregion
     }

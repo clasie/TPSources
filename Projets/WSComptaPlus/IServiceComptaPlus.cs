@@ -213,5 +213,18 @@ namespace WSComptaPlus
             RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         List<ERPDynamics.Response> BusRelSegmentGroup(List<BusRelSegmentGroupERB> data);
         #endregion
+
+        #region Login
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            BodyStyle = WebMessageBodyStyle.Bare,
+            RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        List<TokenHandler.Models.LoginResponse> Login(List<TokenHandler.Models.LoginRequest> data);
+        #endregion
     }
 }

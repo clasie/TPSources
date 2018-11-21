@@ -114,6 +114,22 @@ namespace SimulateurErpWs
             //Méthode de liaison avec le service.
             var tableReferenceService = new TableReferenceService(clientConfiguration);
 
+
+            #region TestToken
+            // Envoi avec token
+            var responseLogin = tableReferenceService.Login(new List<TokenHandler.Models.LoginRequest>()
+                { new TokenHandler.Models.LoginRequest { Username = "toto", Password = "titi"} });
+            //// Réponse
+            foreach (var element in responseLogin)
+            {
+                Console.Write("Response : code: {0} - Message{1}  D365 : {2} ERP : {3}\n",
+                    element.Token,
+                    element.responseMsg);
+            }
+            #endregion
+
+            return;//<------------------------------FL_TO_REMOVE
+
             #region envoi CashDiscERP
             // Envoi CashDiscERP
             var responseCashDisc = tableReferenceService.CashDisc(listCashDisc);

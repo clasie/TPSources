@@ -63,6 +63,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TokenHandler\TokenHandler.csproj">
+      <Project>{a7363cb8-5b4b-4047-91ae-b8ed9d6641e1}</Project>
+      <Name>TokenHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SideWsComptaPlus\SideWsComptaPlus.csproj">
       <Project>{22a372c2-db3c-44db-b0d0-8c153405d5cb}</Project>
       <Name>SideWsComptaPlus</Name>

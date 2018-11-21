@@ -33,6 +33,11 @@ using LinkDynamicsWsComptaPlus;
 using System.Linq;
 using System.Reflection;
 using System.Globalization;
+using System.ServiceModel.Web;
+using System.Net;
+using System.Text;
+using System.Security.Permissions;
+using TokenHandler;
 
 namespace WSComptaPlus
 {
@@ -264,6 +269,42 @@ namespace WSComptaPlus
         #region CashDisc
         public List<ERPDynamics.Response> CashDisc(List<CashDiscERP> data)
         {
+            Token kh = new Token();
+            kh.GetKeyInHeader();
+
+            return new List<ERPDynamics.Response>() {
+                    new ERPDynamics.Response { Message = kh.GetKeyInHeader()}
+                };
+
+            //kh.GetKey();
+            //return null;
+            //return new List<ERPDynamics.Response>() {
+            //        new ERPDynamics.Response { Message = kh.GetKey()}
+            //    };
+
+            //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+            //WebHeaderCollection headers = request.Headers;
+            //StringBuilder sb = new StringBuilder();
+
+            ////System.Net.Http.DelegatingHandler base =  //base.s
+
+            ////WebOperationContext.Current.OutgoingResponse
+            ERPDynamics.Response resp = new ERPDynamics.Response();
+            resp.Message = "Ko!";
+            throw new WebFaultException<ERPDynamics.Response>(resp, HttpStatusCode.Unauthorized);
+
+            //foreach (string headerName in headers.AllKeys)
+            //{
+            //    sb.Append(" headerName: " + headers[headerName]);
+            //}
+
+            //return new List<ERPDynamics.Response>() {
+            //        new ERPDynamics.Response { Message = sb.ToString()}
+            //    };
+
+            //return new List<ERPDynamics.Response>() { new ERPDynamics.Response { Message = "test token" } };
+            //<------------- FL_TO_REMOVE
+
             log.Info(string.Format("WEB 1.0 Method Called: {0}", MethodBase.GetCurrentMethod().Name));
             return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
         }
@@ -277,9 +318,18 @@ namespace WSComptaPlus
         }
         #endregion
 
+        #region Login
+        public List<TokenHandler.Models.LoginResponse> Login(List<TokenHandler.Models.LoginRequest> data)
+        {
+            log.Info(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name));
+            return new List<TokenHandler.Models.LoginResponse>() { new TokenHandler.Models.LoginResponse { Token = "test 1.0"} };
+        }
+        #endregion
+
         #endregion
 
         #region Mapping CashDiscERP2CashDisc
+        //[PrincipalPermission(SecurityAction.Demand, Role = "MyApplicationRoleA")]
         private List<CashDisc> CashDiscERP2CashDisc(List<CashDiscERP> listCashDiscERP) {
 
             log.Info(string.Format("IN CashDiscERP2CashDisc, listCashDiscERP: {0}", listCashDiscERP.Count));
