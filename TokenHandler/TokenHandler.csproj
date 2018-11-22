@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v18.1">
+      <HintPath>..\ReferencedAssemblies\DevExpress.Data.v18.1.dll</HintPath>
+    </Reference>
     <Reference Include="ERPDynamics">
       <HintPath>..\..\..\..\..\SVNTP\TP\Sources\DLLs\ERPDynamics.dll</HintPath>
     </Reference>

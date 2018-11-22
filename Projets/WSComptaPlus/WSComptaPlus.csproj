@@ -99,7 +99,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicAuth\Auth.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\WsInfoModel.cs" />
+    <Compile Include="Process\ManageAuthAndToken.cs" />
     <Compile Include="ServiceComptaPlus.svc.cs">
       <DependentUpon>ServiceComptaPlus.svc</DependentUpon>
     </Compile>

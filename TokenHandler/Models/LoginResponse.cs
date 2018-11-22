@@ -13,11 +13,14 @@ namespace TokenHandler.Models
         {
 
             this.Token = "";
-            this.responseMsg = new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.Unauthorized };
+            //this.HttpResponseMsg = new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.Unauthorized };
         }
 
         public string Token { get; set; }
-        public HttpResponseMessage responseMsg { get; set; }
+        //public HttpResponseMessage HttpResponseMsg { get; set; }
+        public string Code { get; set; }
+        public string Message { get; set; }
+        public string ResponseMsg { get; set; }
 
     }
 }

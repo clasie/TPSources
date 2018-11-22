@@ -222,9 +222,10 @@ namespace WSComptaPlus
         /// <returns></returns>
         [OperationContract]
         [WebInvoke(Method = "POST",
+            UriTemplate = "login/ws",
             BodyStyle = WebMessageBodyStyle.Bare,
             RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
-        List<TokenHandler.Models.LoginResponse> Login(List<TokenHandler.Models.LoginRequest> data);
+        TokenHandler.Models.LoginResponse Login(TokenHandler.Models.LoginRequest data);
         #endregion
     }
 }

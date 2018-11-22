@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using TokenHandler;
+using TokenHandler.Models;
 using ClientConfiguration = SideWsComptaPlus.Tools.ClientConfiguration;
 using ServiceRequestAttribute = SideWsComptaPlus.Attributes.ServiceRequestAttribute;
 
@@ -303,6 +304,168 @@ namespace SideWsComptaPlus.Services
             }
         }
 
+        public TResultType CallServiceLogin<TRequestContractType, TResultType>(TRequestContractType dRequest)
+           where TResultType : TokenHandler.Models.LoginResponse
+           where TRequestContractType : TokenHandler.Models.LoginRequest
+        {
+            var attribute = typeof(TRequestContractType).GetCustomAttributes(true).OfType<ServiceRequestAttribute>().FirstOrDefault();
+            //to corrige
+            if (false) //attribute == null)
+            {
+                //--------------------------------------------------------------
+                // Erreur dans la réponse
+                //--------------------------------------------------------------
+                //var resultError = new List<TResultType>();
+                //foreach (var r in dRequest)
+                //{
+                    var resp = Activator.CreateInstance<TResultType>();
+                    resp.Code = "10001";
+                    resp.Message = "Attribut RequestContractType manquant pour le type " + typeof(TRequestContractType).Name;
+                    //resp.HttpResponseMsg = null;
+                    resp.ResponseMsg = null;
+                    //resultError.Add(resp);
+                //}
+                return resp;
+            }
+
+            try
+            {
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(_clientConfiguration.UriString + "\\" + "login/ws");
+                //httpWebRequest.Timeout = (httpWebRequest.Timeout * 10);
+                //httpWebRequest.Timeout = (120);
+                httpWebRequest.ContentType = "application/json; charset=utf-8; ";
+                httpWebRequest.Method = "POST";
+                httpWebRequest.Headers.Add("Authorization", "Bearer " + "123456789");
+                var json = JsonHelp.JsonSerialize(dRequest);
+
+                // Envoyer les données au service.
+                using (var streamWriter =
+                    new StreamWriter(httpWebRequest.GetRequestStream())) { streamWriter.Write(json); }
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                if (httpResponse.StatusCode != HttpStatusCode.OK)
+                {
+                    //--------------------------------------------------------------
+                    // Erreur dans la réponse
+                    //--------------------------------------------------------------
+                    //var resultError = new TResultType();
+                    //foreach (var r in dRequest)
+                    //{
+                        //var resp = Activator.CreateInstance<TResultType>();
+                        //resp.Code = "9004";
+                        //resp.Message = "Aucune réponse : " + httpResponse.StatusCode.ToString();
+                        //resp.ErpOprNumber = Guid.Empty;
+                        //resp.DynamicsOprNumber = Guid.Empty;
+                        //resultError.Add(resp);
+
+                        var resp = Activator.CreateInstance<TResultType>();
+                        resp.Code = "10002";
+                        //resp.HttpResponseMsg = null;
+                        resp.ResponseMsg = "Aucune réponse : " + httpResponse.StatusCode.ToString(); 
+                        //resultError.Add(resp);
+                    //}
+                    return resp;
+                }
+
+                //List<TResultType> result;
+                var result = Activator.CreateInstance<TResultType>();
+                using (var respStream = httpResponse.GetResponseStream())
+                {
+                    if (respStream == null) return null;
+                    var reader = new StreamReader(respStream);
+                    var rep = @reader.ReadToEnd().Trim();
+                    try
+                    {
+                        result = (TResultType)JsonHelp.JsonDeserialize<TResultType>(rep);
+                    }
+                    catch (Exception e)
+                    {
+                        //-----------------------------------------------------------------
+                        // Erreur dans le message de retour = Renvoi du message FrameWork
+                        //-----------------------------------------------------------------
+                        //var resultError = new List<TResultType>();
+                        //foreach (var r in dRequest)
+                        //{
+                            var resp = Activator.CreateInstance<TResultType>();
+                            //resp.Code = "9999";
+                            //resp.Message = e.Message;
+                            //resp.ErpOprNumber = Guid.Empty;
+                            //resp.DynamicsOprNumber = Guid.Empty;
+                            //resultError.Add(resp);
+
+                            resp.Code = "10003";
+                            //resp.HttpResponseMsg = null;
+                            resp.ResponseMsg = e.Message;
+                            //resultError.Add(resp);
+                        //}
+                        return resp;
+                    }
+                }
+                return result;
+            }
+            catch (WebException e)
+            {
+                //var resultError = new List<TResultType>();
+                //foreach (var r in dRequest)
+                //{
+                    var resp = Activator.CreateInstance<TResultType>();
+                    //resp.Code = "9000";
+                    //resp.Message = e.Message;
+                    //resp.ErpOprNumber = Guid.Empty;
+                    //resp.DynamicsOprNumber = Guid.Empty;
+                    //resultError.Add(resp);
+
+                    resp.Code = "10004";
+                    //resp.HttpResponseMsg = null;
+                    resp.ResponseMsg = e.Message;
+                    //resultError.Add(resp);
+                //}
+                return resp;
+            }
+            catch (UriFormatException e)
+            {
+                //var resultError = new List<TResultType>();
+                //foreach (var r in dRequest)
+                //{
+                    var resp = Activator.CreateInstance<TResultType>();
+                    //resp.Code = "9001";
+                    //resp.Message = e.Message;
+                    //resp.ErpOprNumber = Guid.Empty;
+                    //resp.DynamicsOprNumber = Guid.Empty;
+                    //resultError.Add(resp);
+
+                    resp.Code = "10005";
+                    //resp.HttpResponseMsg = null;
+                    resp.ResponseMsg = e.Message;
+                    //resultError.Add(resp);
+               // }
+                return resp;
+            }
+            catch (Exception e)
+            {
+                //-----------------------------------------------------------------
+                // Erreur générale du Web Service le message de retour =
+                // Renvoi du message FrameWork
+                //-----------------------------------------------------------------
+                //var resultError = new List<TResultType>();
+                //foreach (var r in dRequest)
+                //{
+                    var resp = Activator.CreateInstance<TResultType>();
+                    //resp.Code = "9999";
+                    //resp.Message = e.Message;
+                    //resp.ErpOprNumber = Guid.Empty;
+                    //resp.DynamicsOprNumber = Guid.Empty;
+                    //resultError.Add(resp);
+
+                    resp.Code = "10006";
+                    //resp.HttpResponseMsg = null;
+                    resp.ResponseMsg = e.Message;
+                    //resultError.Add(resp);
+                //}
+                return resp;
+            }
+        }
+
 
         #endregion
 
@@ -316,8 +479,6 @@ namespace SideWsComptaPlus.Services
         /// <returns></returns>
         public List<ModelBusiness.Response> CashDisc(List<CashDiscERP> dobject)
         {
-            //Token protection
-            //todo
             return CallServiceERP<CashDiscERP, ModelBusiness.Response>(dobject);
         }
         #endregion
@@ -340,20 +501,22 @@ namespace SideWsComptaPlus.Services
         /// </summary>
         /// <param name="dobject"></param>
         /// <returns></returns>
-        public List<TokenHandler.Models.LoginResponse> Login(List<TokenHandler.Models.LoginRequest> dobject)
+        public TokenHandler.Models.LoginResponse Login(TokenHandler.Models.LoginRequest dobject)
         {
-            //Test if Token
-            TokenHandler.Token th = new Token();
-            HttpRequestMessage httpRequestMessage = HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage;
+            return CallServiceLogin<LoginRequest, LoginResponse>(dobject);
 
-            //var result = th.SendAsyncAccess(httpRequestMessage,null);
+            ////Test if Token
+            //TokenHandler.Token th = new Token();
+            //HttpRequestMessage httpRequestMessage = HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage;
 
-            //test if user exists
-            //to do
-            var tokenCreated = new Token().createToken("myuser");
-            string concat = tokenCreated; // "From WS -> UN: " +  dobject.FirstOrDefault().Username + " PW: " + dobject.FirstOrDefault().Password;
-            //generates a KEY and get it back
-            return new List<TokenHandler.Models.LoginResponse>() { new TokenHandler.Models.LoginResponse { Token = concat } };
+            ////var result = th.SendAsyncAccess(httpRequestMessage,null);
+
+            ////test if user exists
+            ////to do
+            //var tokenCreated = new Token().createToken("myuser");
+            //string concat = tokenCreated; // "From WS -> UN: " +  dobject.FirstOrDefault().Username + " PW: " + dobject.FirstOrDefault().Password;
+            ////generates a KEY and get it back
+            //return new TokenHandler.Models.LoginResponse { Token = concat };
         }
         #endregion
 

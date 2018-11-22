@@ -17,18 +17,28 @@ namespace TokenHandler
 {
     public class Token : DelegatingHandler
     {
-        public bool HasKey()
+        private static readonly Lazy<Token> lazy =
+            new Lazy<Token>(() => new Token());
+
+        public static Token Instance { get { return lazy.Value; } }
+
+        private Token()
         {
-            return true; ;
         }
-        public string GetKey() {
-            ERPDynamics.Response resp = new ERPDynamics.Response();
-            resp.Message = "Ko!";
-            throw new WebFaultException<ERPDynamics.Response>(resp, HttpStatusCode.Forbidden);
-            return "eeeeeeeiiioooo";
-        }
-        public string GetKeyInHeader() {
-             
+
+        //public bool HasKey()
+        //{
+        //    return true; ;
+        //}
+        //public string GetKey() {
+        //    ERPDynamics.Response resp = new ERPDynamics.Response();
+        //    resp.Message = "Ko!";
+        //    throw new WebFaultException<ERPDynamics.Response>(resp, HttpStatusCode.Forbidden);
+        //    return "eeeeeeeiiioooo";
+        //}
+        public string GetKeyInHeader()
+        {
+
 
             IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
             WebHeaderCollection headers = request.Headers;
@@ -99,15 +109,71 @@ namespace TokenHandler
             //If not authorized the user must go against the Login service.
             return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });            
         }
+        public string IsValidKey(string token)
+        {
+            token = createToken("test");
+
+            HttpStatusCode statusCode;
+            //string token;
+            //determine whether a jwt exists or not
+            //if (!TryRetrieveToken(request, out token))
+            //{
+            //    statusCode = HttpStatusCode.Unauthorized;
+            //    //allow requests with no token - whether a action method needs an authentication can be set with the claimsauthorization attribute
+            //    //return base.SendAsync(request, cancellationToken);
+            //}
+
+            try
+            {
+                const string sec = TokenHandler.Constants.TokenKey.PrivateKey;
+                var now = DateTime.UtcNow;
+                var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
+
+                Microsoft.IdentityModel.Tokens.SecurityToken securityToken;
+                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                TokenValidationParameters validationParameters = new TokenValidationParameters()
+                {
+                    ValidAudience = "http://localhost:50191",
+                    ValidIssuer = "http://localhost:50191",
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    LifetimeValidator = this.LifetimeValidator,
+                    IssuerSigningKey = securityKey
+                };
+                //extract and assign the user of the jwt
+                handler.ValidateToken(TokenHandler.Constants.TokenKey.GeneratedKeyToTest, validationParameters, out securityToken);
+                var ccc = securityToken.ToString();
+                //Thread.CurrentPrincipal = handler.ValidateToken(token, validationParameters, out securityToken);
+                //HttpContext.Current.User = handler.ValidateToken(token, validationParameters, out securityToken);
+
+                return "Ok key valide";
+                //return base.SendAsync(request, cancellationToken);
+            }
+            catch (Microsoft.IdentityModel.Tokens.SecurityTokenValidationException e)
+            {
+                statusCode = HttpStatusCode.Unauthorized;
+                return "unauthorized 1";
+            }
+            catch (Exception ex)
+            {
+                statusCode = HttpStatusCode.InternalServerError;
+                return ex.Message + " " + ex.InnerException; //,"unauthorized 2";
+            }
+            return "unauthorized 3";
+            //If not authorized the user must go against the Login service.
+            //return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });
+        }
 
         public bool LifetimeValidator(DateTime? notBefore, DateTime? expires, Microsoft.IdentityModel.Tokens.SecurityToken securityToken, TokenValidationParameters validationParameters)
         {
+            return true;
             if (expires != null)
             {
                 if (DateTime.UtcNow < expires) return true;
             }
             return false;
         }
+
         public string createToken(string username)
         {
             //Set issued at date
@@ -126,7 +192,9 @@ namespace TokenHandler
             const string sec = TokenHandler.Constants.TokenKey.PrivateKey;
             var now = DateTime.UtcNow;
             var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
-            var signingCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(securityKey, Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature);
+            var signingCredentials 
+                = new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                    securityKey, Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature);
 
 
             //create the jwt

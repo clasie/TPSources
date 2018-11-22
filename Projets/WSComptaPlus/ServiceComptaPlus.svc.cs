@@ -38,6 +38,8 @@ using System.Net;
 using System.Text;
 using System.Security.Permissions;
 using TokenHandler;
+using TokenHandler.Models;
+using WSComptaPlus.Process;
 
 namespace WSComptaPlus
 {
@@ -269,12 +271,15 @@ namespace WSComptaPlus
         #region CashDisc
         public List<ERPDynamics.Response> CashDisc(List<CashDiscERP> data)
         {
-            Token kh = new Token();
-            kh.GetKeyInHeader();
+            //to do test protection
+            //Token.Instance.
 
-            return new List<ERPDynamics.Response>() {
-                    new ERPDynamics.Response { Message = kh.GetKeyInHeader()}
-                };
+            //Token kh = new Token();
+            //kh.GetKeyInHeader();
+
+            //return new List<ERPDynamics.Response>() {
+            //        new ERPDynamics.Response { Message = kh.GetKeyInHeader()}
+            //    };
 
             //kh.GetKey();
             //return null;
@@ -289,9 +294,9 @@ namespace WSComptaPlus
             ////System.Net.Http.DelegatingHandler base =  //base.s
 
             ////WebOperationContext.Current.OutgoingResponse
-            ERPDynamics.Response resp = new ERPDynamics.Response();
-            resp.Message = "Ko!";
-            throw new WebFaultException<ERPDynamics.Response>(resp, HttpStatusCode.Unauthorized);
+            //ERPDynamics.Response resp = new ERPDynamics.Response();
+            //resp.Message = "Ko!";
+            //throw new WebFaultException<ERPDynamics.Response>(resp, HttpStatusCode.Unauthorized);
 
             //foreach (string headerName in headers.AllKeys)
             //{
@@ -304,6 +309,23 @@ namespace WSComptaPlus
 
             //return new List<ERPDynamics.Response>() { new ERPDynamics.Response { Message = "test token" } };
             //<------------- FL_TO_REMOVE
+            ERPDynamics.Response res = new ERPDynamics.Response();
+
+
+            try
+            {
+                var loginResponse = ManageAuthAndToken.Instance.ValidateToken();
+
+                res.Message = loginResponse.Message;
+                return new List<ERPDynamics.Response>() { res };
+
+                //GetKeyInHeader
+            }
+            catch (Exception ex)
+            {
+                log.Error(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name), ex);
+                throw ex;
+            }
 
             log.Info(string.Format("WEB 1.0 Method Called: {0}", MethodBase.GetCurrentMethod().Name));
             return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
@@ -319,10 +341,21 @@ namespace WSComptaPlus
         #endregion
 
         #region Login
-        public List<TokenHandler.Models.LoginResponse> Login(List<TokenHandler.Models.LoginRequest> data)
+        /// <summary>
+        /// Le user tente de se logger
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public TokenHandler.Models.LoginResponse Login(TokenHandler.Models.LoginRequest data)
         {
-            log.Info(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name));
-            return new List<TokenHandler.Models.LoginResponse>() { new TokenHandler.Models.LoginResponse { Token = "test 1.0"} };
+            try
+            {
+                return ManageAuthAndToken.Instance.Login(data);
+            }
+            catch (Exception ex) {
+                log.Error(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name), ex);
+                throw ex;
+            }            
         }
         #endregion
 
