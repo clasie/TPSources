@@ -16,7 +16,6 @@ namespace WSComptaPlus.BasicAuth
         private Auth()
         {
         }
-        //call db for a user creds
         public User UserExists(User user)
         {
            return UserExistsInDb(user);
@@ -25,6 +24,8 @@ namespace WSComptaPlus.BasicAuth
         {
             //TODO call DB/config, ok  on est dans le context web -> charger la config en mémoire!
             //...
+            //HttpContext.Application.Add("a",new Object());
+            //HttpContext.Application.Add("", new object());
             user.Exists = false;
             return user;
         }

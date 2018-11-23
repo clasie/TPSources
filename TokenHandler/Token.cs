@@ -12,9 +12,18 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using TokenHandler.Constants;
 
 namespace TokenHandler
 {
+    /// <summary>
+    /// 
+    /// To inst/uninst jwt
+    /// 
+    /// uninstall-package newtonsoft.json -force
+    /// install-package newtonsoft.json
+    /// 
+    /// </summary>
     public class Token : DelegatingHandler
     {
         private static readonly Lazy<Token> lazy =
@@ -24,38 +33,30 @@ namespace TokenHandler
 
         private Token()
         {
-        }
-
-        //public bool HasKey()
-        //{
-        //    return true; ;
-        //}
-        //public string GetKey() {
-        //    ERPDynamics.Response resp = new ERPDynamics.Response();
-        //    resp.Message = "Ko!";
-        //    throw new WebFaultException<ERPDynamics.Response>(resp, HttpStatusCode.Forbidden);
-        //    return "eeeeeeeiiioooo";
-        //}
+        } 
         public string GetKeyInHeader()
         {
-
-
             IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
             WebHeaderCollection headers = request.Headers;
-            return headers.Get("Authorization");
+            return headers.Get(TokenKey.HeaderTokenToUse);
         }
+        public string GetTokenFromAuthHeaderString(string authHeader)
+        {
+            return authHeader.StartsWith(TokenHandler.Constants.TokenKey.PrefixSetByTheCallerBeforeTheKey) ?
+                authHeader.Substring(7) : authHeader;
 
+        }
         private static bool TryRetrieveToken(HttpRequestMessage request, out string token)
         {
             token = null;
             IEnumerable<string> authzHeaders;
-            if (!request.Headers.TryGetValues("Authorization", out authzHeaders) || authzHeaders.Count() > 1)
+            if (!request.Headers.TryGetValues(TokenKey.HeaderTokenToUse, out authzHeaders) || authzHeaders.Count() > 1)
             {
                 return false;
             }
             var bearerToken = authzHeaders.ElementAt(0);
-            //Bearer stuff
-            token = bearerToken.StartsWith(TokenHandler.Constants.TokenKey.PrefixSetByTheCallerBeforeTheKey) ? bearerToken.Substring(7) : bearerToken;
+            token = bearerToken.StartsWith(TokenHandler.Constants.TokenKey.PrefixSetByTheCallerBeforeTheKey) ? 
+                bearerToken.Substring(TokenKey.TokenPrefixRaw.Length) : bearerToken;
             return true;
         }
 
@@ -109,26 +110,14 @@ namespace TokenHandler
             //If not authorized the user must go against the Login service.
             return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });            
         }
-        public string IsValidKey(string token)
+        public TokenHandler.Models.TokenCheckResult CheckTokenValidity(string token)
         {
-            token = createToken("test");
-
-            HttpStatusCode statusCode;
-            //string token;
-            //determine whether a jwt exists or not
-            //if (!TryRetrieveToken(request, out token))
-            //{
-            //    statusCode = HttpStatusCode.Unauthorized;
-            //    //allow requests with no token - whether a action method needs an authentication can be set with the claimsauthorization attribute
-            //    //return base.SendAsync(request, cancellationToken);
-            //}
-
+            TokenHandler.Models.TokenCheckResult tokenCheckResult = new TokenHandler.Models.TokenCheckResult();
             try
             {
                 const string sec = TokenHandler.Constants.TokenKey.PrivateKey;
                 var now = DateTime.UtcNow;
                 var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
-
                 Microsoft.IdentityModel.Tokens.SecurityToken securityToken;
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 TokenValidationParameters validationParameters = new TokenValidationParameters()
@@ -140,33 +129,27 @@ namespace TokenHandler
                     LifetimeValidator = this.LifetimeValidator,
                     IssuerSigningKey = securityKey
                 };
-                //extract and assign the user of the jwt
-                handler.ValidateToken(TokenHandler.Constants.TokenKey.GeneratedKeyToTest, validationParameters, out securityToken);
-                var ccc = securityToken.ToString();
-                //Thread.CurrentPrincipal = handler.ValidateToken(token, validationParameters, out securityToken);
-                //HttpContext.Current.User = handler.ValidateToken(token, validationParameters, out securityToken);
-
-                return "Ok key valide";
-                //return base.SendAsync(request, cancellationToken);
+                handler.ValidateToken(TokenHandler.Constants.TokenKey.GeneratedKeyToTest, 
+                    validationParameters, out securityToken);
+                tokenCheckResult.IsValidKey = true;
             }
             catch (Microsoft.IdentityModel.Tokens.SecurityTokenValidationException e)
             {
-                statusCode = HttpStatusCode.Unauthorized;
-                return "unauthorized 1";
+                tokenCheckResult.IsValidKey = false;
+                tokenCheckResult.HttpStatusCode = HttpStatusCode.Unauthorized;
+                tokenCheckResult.ErrorMessage = string.Format("{0}", e.ToString());
             }
             catch (Exception ex)
             {
-                statusCode = HttpStatusCode.InternalServerError;
-                return ex.Message + " " + ex.InnerException; //,"unauthorized 2";
+                tokenCheckResult.IsValidKey = false;
+                tokenCheckResult.HttpStatusCode = HttpStatusCode.Unauthorized;
+                tokenCheckResult.ErrorMessage = string.Format("{0}", ex.ToString());
             }
-            return "unauthorized 3";
-            //If not authorized the user must go against the Login service.
-            //return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });
+            return tokenCheckResult;
         }
 
         public bool LifetimeValidator(DateTime? notBefore, DateTime? expires, Microsoft.IdentityModel.Tokens.SecurityToken securityToken, TokenValidationParameters validationParameters)
         {
-            return true;
             if (expires != null)
             {
                 if (DateTime.UtcNow < expires) return true;
@@ -179,12 +162,12 @@ namespace TokenHandler
             //Set issued at date
             DateTime issuedAt = DateTime.UtcNow;
             //set the time when it expires
-            DateTime expires = DateTime.UtcNow.AddDays(7);
+            DateTime expires = DateTime.UtcNow.AddDays(TokenKey.TokenDaysLive);
 
             //To encrypt the private token -> http://stackoverflow.com/questions/18223868/how-to-encrypt-jwt-security-token
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            //create a identity and add claims to the user which we want to log in
+            //create an identity and add claims to the user which we want to log in
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, username)
@@ -201,8 +184,8 @@ namespace TokenHandler
             var token =
                 (JwtSecurityToken)
                     tokenHandler.CreateJwtSecurityToken(
-                        issuer: "http://localhost:50191", 
-                        audience: "http://localhost:50191",
+                        issuer: TokenKey.Issuer, 
+                        audience: TokenKey.Audience,
                         subject: claimsIdentity, 
                         notBefore: issuedAt, 
                         expires: expires, 

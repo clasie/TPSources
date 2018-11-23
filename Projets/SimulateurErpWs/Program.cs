@@ -110,23 +110,13 @@ namespace SimulateurErpWs
              };
             #endregion
 
-
             //Méthode de liaison avec le service.
             var tableReferenceService = new TableReferenceService(clientConfiguration);
 
-
-            #region Test Login/Token
-            // Envoi avec token
+            #region Test Login avec recup token
             var responseLogin = tableReferenceService.Login( new TokenHandler.Models.LoginRequest { Username = "toto", Password = "titi"} );
-
-
-            //// Réponse
-            //Console.Write("Response : code: {0} - Message{1}  D365 : {2} ERP : {3}\n",
-            //    responseLogin.Token,
-            //    responseLogin.ResponseMsg);
             #endregion
 
-           // return;//<------------------------------FL_TO_REMOVE
 
             #region envoi CashDiscERP
             // Envoi CashDiscERP

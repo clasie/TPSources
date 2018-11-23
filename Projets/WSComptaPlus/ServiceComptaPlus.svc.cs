@@ -40,6 +40,8 @@ using System.Security.Permissions;
 using TokenHandler;
 using TokenHandler.Models;
 using WSComptaPlus.Process;
+using TokenHandler.CustomException;
+using TokenHandler.Constants;
 
 namespace WSComptaPlus
 {
@@ -271,64 +273,23 @@ namespace WSComptaPlus
         #region CashDisc
         public List<ERPDynamics.Response> CashDisc(List<CashDiscERP> data)
         {
-            //to do test protection
-            //Token.Instance.
-
-            //Token kh = new Token();
-            //kh.GetKeyInHeader();
-
-            //return new List<ERPDynamics.Response>() {
-            //        new ERPDynamics.Response { Message = kh.GetKeyInHeader()}
-            //    };
-
-            //kh.GetKey();
-            //return null;
-            //return new List<ERPDynamics.Response>() {
-            //        new ERPDynamics.Response { Message = kh.GetKey()}
-            //    };
-
-            //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-            //WebHeaderCollection headers = request.Headers;
-            //StringBuilder sb = new StringBuilder();
-
-            ////System.Net.Http.DelegatingHandler base =  //base.s
-
-            ////WebOperationContext.Current.OutgoingResponse
-            //ERPDynamics.Response resp = new ERPDynamics.Response();
-            //resp.Message = "Ko!";
-            //throw new WebFaultException<ERPDynamics.Response>(resp, HttpStatusCode.Unauthorized);
-
-            //foreach (string headerName in headers.AllKeys)
-            //{
-            //    sb.Append(" headerName: " + headers[headerName]);
-            //}
-
-            //return new List<ERPDynamics.Response>() {
-            //        new ERPDynamics.Response { Message = sb.ToString()}
-            //    };
-
-            //return new List<ERPDynamics.Response>() { new ERPDynamics.Response { Message = "test token" } };
-            //<------------- FL_TO_REMOVE
-            ERPDynamics.Response res = new ERPDynamics.Response();
-
-
-            try
+            try{
+                ManageAuthAndToken.Instance.ValidateToken();
+                //debug
+                //TokenHandler.Utils.TokenExceptionFormat.GetResponseForDebug("ok key passed");
+                return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
+            }
+            catch (InvalidTokenException iex)
             {
-                var loginResponse = ManageAuthAndToken.Instance.ValidateToken();
-
-                res.Message = loginResponse.Message;
-                return new List<ERPDynamics.Response>() { res };
-
-                //GetKeyInHeader
+                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel, MethodBase.GetCurrentMethod().Name), iex);
+                return TokenHandler.Utils.TokenExceptionFormat.GetResponseForRefusedToken(iex.Message);
             }
             catch (Exception ex)
             {
-                log.Error(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name), ex);
+                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel, MethodBase.GetCurrentMethod().Name), ex);
                 throw ex;
             }
-
-            log.Info(string.Format("WEB 1.0 Method Called: {0}", MethodBase.GetCurrentMethod().Name));
-            return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
+            
         }
         #endregion
 
@@ -350,10 +311,12 @@ namespace WSComptaPlus
         {
             try
             {
+                //return new LoginResponse() { Message = System.Security.Principal.WindowsIdentity.GetCurrent().Name };
+            
                 return ManageAuthAndToken.Instance.Login(data);
             }
             catch (Exception ex) {
-                log.Error(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name), ex);
+                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel,MethodBase.GetCurrentMethod().Name), ex);
                 throw ex;
             }            
         }
@@ -365,7 +328,7 @@ namespace WSComptaPlus
         //[PrincipalPermission(SecurityAction.Demand, Role = "MyApplicationRoleA")]
         private List<CashDisc> CashDiscERP2CashDisc(List<CashDiscERP> listCashDiscERP) {
 
-            log.Info(string.Format("IN CashDiscERP2CashDisc, listCashDiscERP: {0}", listCashDiscERP.Count));
+            //log.Info(string.Format("IN CashDiscERP2CashDisc, listCashDiscERP: {0}", listCashDiscERP.Count));
 
             List<CashDisc> listCashDisc = listCashDiscERP.Select(p => new CashDisc() {
                 CashDiscCode = p.CashDiscCode,

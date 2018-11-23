@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using TokenHandler;
 using TokenHandler.Constants;
@@ -23,7 +24,7 @@ namespace WSComptaPlus.Process
         {
         }
         /// <summary>
-        /// This method orchestrate Auth and Token features
+        /// Get a token if the user exists.
         /// </summary>
         /// <returns></returns>
         public LoginResponse Login(TokenHandler.Models.LoginRequest data) {
@@ -32,21 +33,25 @@ namespace WSComptaPlus.Process
                 new TokenHandler.Models.LoginResponse { Token = Token.Instance.createToken(data.Username), Message = TokenKey.MessageTokenForUser, Code = TokenKey.CodeUserExists } ://user found -> get new Token
                 new TokenHandler.Models.LoginResponse { Token = string.Empty, Message = TokenKey.MessageNoTokenForUnknownUser, Code = TokenKey.CodeUnknownUser };//no user found -> no token            
         }
-        public LoginResponse ValidateToken() {
-            //ok arrive ici
-            //Tester la clé
-            string resultValidation = Token.Instance.IsValidKey(TokenKey.GeneratedKeyToTest);
-            //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-            //WebHeaderCollection headers = request.Headers;
-            //StringBuilder sb = new StringBuilder();
-            //foreach (string headerName in headers.AllKeys)
-            //{
-            //    sb.Append(" headerName: " + headers[headerName]);
-            //}
-            var log = new LoginResponse();
-            log.Message = resultValidation; // sb.ToString();
-            //1 get from header
-            return log; // new LoginResponse();
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ValidateToken() {
+
+            string resultValidation = Token.Instance.GetKeyInHeader();
+            string regexKey = TokenKey.TokenPrefix;
+            Regex regex = new Regex(regexKey);
+            Match match = regex.Match(resultValidation);
+            string tokenFound = "";
+            if (match.Success)
+            {
+                tokenFound = Token.Instance.GetTokenFromAuthHeaderString(resultValidation);
+                if (!Token.Instance.CheckTokenValidity(tokenFound).IsValidKey) {
+                    throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenInvalid);
+                }
+            } else {
+                throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenNotFound);
+            }
         }
     }
 }

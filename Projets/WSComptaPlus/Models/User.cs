@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using TokenHandler.Constants;
 
 namespace WSComptaPlus.Models
 {
     public class User
     {
         public User() {
-            Token = "NoTokenCreated";
+            Token = TokenKey.NoTokenCreatedLabel;
             Exists = false;//debug, to remove!
         }
         public string Name { get; set; }

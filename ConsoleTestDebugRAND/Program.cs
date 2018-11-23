@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace ConsoleTestDebugRAND
 {
-    //[DomainName("MyTable")]
-    //class Test {
-    //}
-    //class DomainNameAttribute
-    //{
-
-    //}
     class Program
     {
         static void Main(string[] args)
         {
-            TokenHandler.Token.Instance.IsValidKey(TokenHandler.Constants.TokenKey.GeneratedKeyToTest);
+            //var x = TokenHandler.Token
+            //    .Instance.CheckTokenValidity(
+            //        TokenHandler.Constants.TokenKey.GeneratedKeyToTest);
+            var newKey = TokenHandler.Token.Instance.createToken("");
+
+            var y = TokenHandler.Token.Instance.CheckTokenValidity(
+                   //TokenHandler.Constants.TokenKey.GeneratedKeyToTest
+                   newKey
+                ).IsValidKey;
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using TokenHandler;
+using TokenHandler.Constants;
 using TokenHandler.Models;
 using ClientConfiguration = SideWsComptaPlus.Tools.ClientConfiguration;
 using ServiceRequestAttribute = SideWsComptaPlus.Attributes.ServiceRequestAttribute;
@@ -169,7 +170,13 @@ namespace SideWsComptaPlus.Services
                 return resultError;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TRequestContractType"></typeparam>
+        /// <typeparam name="TResultType"></typeparam>
+        /// <param name="dRequest"></param>
+        /// <returns></returns>
         public List<TResultType> CallServiceERP<TRequestContractType, TResultType>(List<TRequestContractType> dRequest)
             where TResultType : ModelBusiness.Response
             where TRequestContractType : Contracts.BaseContractERP
@@ -200,7 +207,7 @@ namespace SideWsComptaPlus.Services
                 //httpWebRequest.Timeout = (120);
                 httpWebRequest.ContentType = "application/json; charset=utf-8; ";
                 httpWebRequest.Method = "POST";
-                httpWebRequest.Headers.Add("Authorization", "Bearer " + "123456789");
+                httpWebRequest.Headers.Add("Authorization", "Bearxer " + TokenKey.GeneratedKeyToTest); // "0123456789");
                 var json = JsonHelp.JsonSerialize(dRequest);
 
                 // Envoyer les données au service.
@@ -303,7 +310,13 @@ namespace SideWsComptaPlus.Services
                 return resultError;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TRequestContractType"></typeparam>
+        /// <typeparam name="TResultType"></typeparam>
+        /// <param name="dRequest"></param>
+        /// <returns></returns>
         public TResultType CallServiceLogin<TRequestContractType, TResultType>(TRequestContractType dRequest)
            where TResultType : TokenHandler.Models.LoginResponse
            where TRequestContractType : TokenHandler.Models.LoginRequest
@@ -465,8 +478,6 @@ namespace SideWsComptaPlus.Services
                 return resp;
             }
         }
-
-
         #endregion
 
         #region Les interfaces (Métiers)
@@ -504,19 +515,6 @@ namespace SideWsComptaPlus.Services
         public TokenHandler.Models.LoginResponse Login(TokenHandler.Models.LoginRequest dobject)
         {
             return CallServiceLogin<LoginRequest, LoginResponse>(dobject);
-
-            ////Test if Token
-            //TokenHandler.Token th = new Token();
-            //HttpRequestMessage httpRequestMessage = HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage;
-
-            ////var result = th.SendAsyncAccess(httpRequestMessage,null);
-
-            ////test if user exists
-            ////to do
-            //var tokenCreated = new Token().createToken("myuser");
-            //string concat = tokenCreated; // "From WS -> UN: " +  dobject.FirstOrDefault().Username + " PW: " + dobject.FirstOrDefault().Password;
-            ////generates a KEY and get it back
-            //return new TokenHandler.Models.LoginResponse { Token = concat };
         }
         #endregion
 
