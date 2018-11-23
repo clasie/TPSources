@@ -312,7 +312,7 @@ namespace WSComptaPlus
             try
             {
                 //return new LoginResponse() { Message = System.Security.Principal.WindowsIdentity.GetCurrent().Name };
-            
+                log.Info("Login");
                 return ManageAuthAndToken.Instance.Login(data);
             }
             catch (Exception ex) {

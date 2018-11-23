@@ -3,6 +3,7 @@ using SideWsComptaPlus.Contracts;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using WSComptaPlus.CustomBehaivious;
 using WSComptaPlus.Models;
 using Response = SideWsComptaPlus.ModelBusiness.Response;
 
@@ -220,6 +221,7 @@ namespace WSComptaPlus
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
+        [MyOperationBehavior]
         [OperationContract]
         [WebInvoke(Method = "POST",
             UriTemplate = "login/ws",
