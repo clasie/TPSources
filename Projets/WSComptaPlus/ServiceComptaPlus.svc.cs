@@ -275,21 +275,18 @@ namespace WSComptaPlus
         {
             try{
                 ManageAuthAndToken.Instance.ValidateToken();
-                //debug
-                //TokenHandler.Utils.TokenExceptionFormat.GetResponseForDebug("ok key passed");
                 return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
             }
-            catch (InvalidTokenException iex)
+            catch (InvalidTokenException ie)
             {
-                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel, MethodBase.GetCurrentMethod().Name), iex);
-                return TokenHandler.Utils.TokenExceptionFormat.GetResponseForRefusedToken(iex.Message);
+                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel, MethodBase.GetCurrentMethod().Name), ie);
+                return TokenHandler.Utils.TokenExceptionFormat.GetResponseForRefusedToken(ie.Message);
             }
             catch (Exception ex)
             {
                 log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel, MethodBase.GetCurrentMethod().Name), ex);
                 throw ex;
-            }
-            
+            }            
         }
         #endregion
 

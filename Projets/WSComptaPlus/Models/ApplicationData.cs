@@ -7,6 +7,14 @@ namespace WSComptaPlus.Models
 {
     public class ApplicationData
     {
-        public string TestApplicationScopeValue { get; set; }
+        private static readonly Lazy<ApplicationData> lazy =
+            new Lazy<ApplicationData>(() => new ApplicationData());
+
+        public static ApplicationData Instance { get { return lazy.Value; } }
+
+        private ApplicationData()
+        {}
+
+        public List<User> listUsers = new List<User>() { };
     }
 }

@@ -194,6 +194,8 @@ namespace WSComptaPlus
         /// <param name="dataJnlVente"></param>
         /// <returns></returns>
         [OperationContract]
+        //[EndpointBehavior]
+        //[MyOperationBehavior2]
         [WebInvoke(Method = "POST",
             UriTemplate = "api/services/NVL_Dynamics_ERP/NVL_ERPTableReferenceService/syncCashDisc",
             BodyStyle = WebMessageBodyStyle.Bare,
@@ -221,7 +223,6 @@ namespace WSComptaPlus
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        [MyOperationBehavior]
         [OperationContract]
         [WebInvoke(Method = "POST",
             UriTemplate = "login/ws",
