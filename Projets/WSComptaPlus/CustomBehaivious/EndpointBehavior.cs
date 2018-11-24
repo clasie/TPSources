@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
@@ -35,6 +36,7 @@ namespace WSComptaPlus.CustomBehaivious
 
         public void Validate(ServiceEndpoint endpoint)
         {
+            var myService = OperationContext.Current.InstanceContext.GetServiceInstance();
             log.Info("Validate 4");
             //throw new NotImplementedException();
         }

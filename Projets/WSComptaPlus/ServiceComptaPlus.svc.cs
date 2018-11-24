@@ -42,6 +42,7 @@ using TokenHandler.Models;
 using WSComptaPlus.Process;
 using TokenHandler.CustomException;
 using TokenHandler.Constants;
+using System.ServiceModel.Activation;
 
 namespace WSComptaPlus
 {
@@ -50,6 +51,7 @@ namespace WSComptaPlus
     /// <summary>
     /// Service :   Gestion des appels et demandes pour la comptabilité Thomas & Piron (Compta Plus)
     /// </summary>
+    //[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
     public class ServiceComptaPlus : IServiceComptaPlus
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

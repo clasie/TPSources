@@ -196,6 +196,7 @@ namespace WSComptaPlus
         [OperationContract]
         //[EndpointBehavior]
         //[MyOperationBehavior2]
+        [MyInspectorAttribute]
         [WebInvoke(Method = "POST",
             UriTemplate = "api/services/NVL_Dynamics_ERP/NVL_ERPTableReferenceService/syncCashDisc",
             BodyStyle = WebMessageBodyStyle.Bare,

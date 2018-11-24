@@ -24,7 +24,7 @@ namespace TokenHandler
     /// install-package newtonsoft.json
     /// 
     /// </summary>
-    public class Token : DelegatingHandler
+    public class Token //: DelegatingHandler
     {
         private static readonly Lazy<Token> lazy =
             new Lazy<Token>(() => new Token());
@@ -36,9 +36,12 @@ namespace TokenHandler
         } 
         public string GetKeyInHeader()
         {
-            IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
-            WebHeaderCollection headers = request.Headers;
-            return headers.Get(TokenKey.HeaderTokenToUse);
+            return WebOperationContext.Current.IncomingRequest.Headers
+                .GetValues("Authorization")[0].ToString();
+
+            //IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
+            //WebHeaderCollection headers = request.Headers;
+            //return headers.Get(TokenKey.HeaderTokenToUse);
         }
         public string GetTokenFromAuthHeaderString(string authHeader)
         {
@@ -60,56 +63,56 @@ namespace TokenHandler
             return true;
         }
 
-        public Task<HttpResponseMessage> SendAsyncAccess(HttpRequestMessage request, CancellationToken cancellationToken) {
-            return SendAsync(request, cancellationToken);
-        }
+        //public Task<HttpResponseMessage> SendAsyncAccess(HttpRequestMessage request, CancellationToken cancellationToken) {
+        //    return SendAsync(request, cancellationToken);
+        //}
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            HttpStatusCode statusCode;
-            string token;
-            //determine whether a jwt exists or not
-            if (!TryRetrieveToken(request, out token))
-            {
-                statusCode = HttpStatusCode.Unauthorized;
-                //allow requests with no token - whether a action method needs an authentication can be set with the claimsauthorization attribute
-                return base.SendAsync(request, cancellationToken);
-            }
+        //protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        //{
+        //    HttpStatusCode statusCode;
+        //    string token;
+        //    //determine whether a jwt exists or not
+        //    if (!TryRetrieveToken(request, out token))
+        //    {
+        //        statusCode = HttpStatusCode.Unauthorized;
+        //        //allow requests with no token - whether a action method needs an authentication can be set with the claimsauthorization attribute
+        //        return base.SendAsync(request, cancellationToken);
+        //    }
 
-            try
-            {
-                const string sec = TokenHandler.Constants.TokenKey.PrivateKey;
-                var now = DateTime.UtcNow;
-                var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
+        //    try
+        //    {
+        //        const string sec = TokenHandler.Constants.TokenKey.PrivateKey;
+        //        var now = DateTime.UtcNow;
+        //        var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
 
-                Microsoft.IdentityModel.Tokens.SecurityToken securityToken;
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                TokenValidationParameters validationParameters = new TokenValidationParameters()
-                {
-                    ValidAudience = "http://localhost:50191",
-                    ValidIssuer = "http://localhost:50191",
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    LifetimeValidator = this.LifetimeValidator,
-                    IssuerSigningKey = securityKey
-                };
-                //extract and assign the user of the jwt
-                Thread.CurrentPrincipal = handler.ValidateToken(token, validationParameters, out securityToken);
-                HttpContext.Current.User = handler.ValidateToken(token, validationParameters, out securityToken);
+        //        Microsoft.IdentityModel.Tokens.SecurityToken securityToken;
+        //        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        //        TokenValidationParameters validationParameters = new TokenValidationParameters()
+        //        {
+        //            ValidAudience = "http://localhost:50191",
+        //            ValidIssuer = "http://localhost:50191",
+        //            ValidateLifetime = true,
+        //            ValidateIssuerSigningKey = true,
+        //            LifetimeValidator = this.LifetimeValidator,
+        //            IssuerSigningKey = securityKey
+        //        };
+        //        //extract and assign the user of the jwt
+        //        Thread.CurrentPrincipal = handler.ValidateToken(token, validationParameters, out securityToken);
+        //        HttpContext.Current.User = handler.ValidateToken(token, validationParameters, out securityToken);
 
-                return base.SendAsync(request, cancellationToken);
-            }
-            catch (Microsoft.IdentityModel.Tokens.SecurityTokenValidationException e)
-            {
-                statusCode = HttpStatusCode.Unauthorized;
-            }
-            catch (Exception ex)
-            {
-                statusCode = HttpStatusCode.InternalServerError;
-            }
-            //If not authorized the user must go against the Login service.
-            return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });            
-        }
+        //        return base.SendAsync(request, cancellationToken);
+        //    }
+        //    catch (Microsoft.IdentityModel.Tokens.SecurityTokenValidationException e)
+        //    {
+        //        statusCode = HttpStatusCode.Unauthorized;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        statusCode = HttpStatusCode.InternalServerError;
+        //    }
+        //    //If not authorized the user must go against the Login service.
+        //    return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });            
+        //}
         public TokenHandler.Models.TokenCheckResult CheckTokenValidity(string token)
         {
             TokenHandler.Models.TokenCheckResult tokenCheckResult = new TokenHandler.Models.TokenCheckResult();
