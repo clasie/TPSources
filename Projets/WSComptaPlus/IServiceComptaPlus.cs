@@ -189,14 +189,12 @@ namespace WSComptaPlus
 
         #region syncCashDisc
         /// <summary>
-        /// TODO
+        /// syncCashDisc
         /// </summary>
         /// <param name="dataJnlVente"></param>
         /// <returns></returns>
         [OperationContract]
-        //[EndpointBehavior]
-        //[MyOperationBehavior2]
-        [MyInspectorAttribute]
+        [TokenInspector]
         [WebInvoke(Method = "POST",
             UriTemplate = "api/services/NVL_Dynamics_ERP/NVL_ERPTableReferenceService/syncCashDisc",
             BodyStyle = WebMessageBodyStyle.Bare,
@@ -206,11 +204,12 @@ namespace WSComptaPlus
 
         #region BusRelSegmentGroup
         /// <summary>
-        /// TODO
+        /// BusRelSegmentGroup
         /// </summary>
         /// <param name="dataJnlVente"></param>
         /// <returns></returns>
         [OperationContract]
+        [TokenInspector]
         [WebInvoke(Method = "POST",
             UriTemplate = "api/services/NVL_Dynamics_ERP/NVL_ERPTableReferenceService/syncBusRelSegmentGroup",
             BodyStyle = WebMessageBodyStyle.Bare,
@@ -218,9 +217,10 @@ namespace WSComptaPlus
         List<ERPDynamics.Response> BusRelSegmentGroup(List<BusRelSegmentGroupERB> data);
         #endregion
 
+        // Login process
         #region Login
         /// <summary>
-        /// 
+        /// Login against the web.config
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>

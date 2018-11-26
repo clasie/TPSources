@@ -16,7 +16,7 @@ using WSComptaPlus.Process;
 
 namespace WSComptaPlus.CustomBehaivious
 {
-    public class MyInspectorAttribute : Attribute, IParameterInspector /*IOperationBehavior,*/
+    public class TokenInspector : Attribute, IParameterInspector ,IOperationBehavior
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -40,32 +40,38 @@ namespace WSComptaPlus.CustomBehaivious
         public void AfterCall(string operationName, object[] outputs, object returnValue, object correlationState)
         {
         }
-
+        /// <summary>
+        /// This method is called prior any methods decorated with 
+        /// '[TokenInspector]' defined inside the 'public interface WSComptaPlus.IServiceComptaPlus'
+        /// </summary>
+        /// <param name="operationName"></param>
+        /// <param name="inputs"></param>
+        /// <returns></returns>
         public object BeforeCall(string operationName, object[] inputs)
         {
+            log.Info("///////////////BeforeCall/////////////////");
             try
             {
                 //Challenge the header Token
                 ManageAuthAndToken.Instance.ValidateToken();
             }
-            catch (TokenHandler.CustomException.InvalidTokenException ite) {
-                //We store complete error message
+            catch (TokenHandler.CustomException.InvalidTokenException ite)
+            {
                 log.Error(FormatMessages.getLogMessage(
-                    MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    this.GetType().Name,
                     System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    string.Concat("operationName: ", operationName, " inputs: ", inputs.ToString()),
                     ite.ToString()));
-                //For security reason we return the minimal info message
-                throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenNotFound);
+                throw new WebFaultException<string>(TokenKey.TokenIssue, HttpStatusCode.Unauthorized);
             }
             catch (Exception ex)
             {
-                //We store complete error message
                 log.Error(FormatMessages.getLogMessage(
-                    MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    this.GetType().Name,
                     System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    string.Concat("operationName: ", operationName, " inputs: ", inputs.ToString()),
                     ex.ToString()));
-                //For security reason we return the minimal info message
-                throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenNotFound);
+                throw new WebFaultException<string>(TokenKey.TokenIssue, HttpStatusCode.Unauthorized);
             }
             return null;
         }

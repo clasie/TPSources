@@ -8,11 +8,22 @@ namespace TokenHandler.Utils
 {
     public static class FormatMessages
     {
-        public static string getLogMessage(string className, string metodName, string exceptionMessage ) {
-            return string.Format("Class: {0} , Method: {1}, Exception: {2}",
-                className, metodName, exceptionMessage);
+        /// <summary>
+        /// Helper to format logs
+        /// </summary>
+        /// <param name="className"></param>
+        /// <param name="methodName"></param>
+        /// <param name="methodParams"></param>
+        /// <param name="exceptionMessage"></param>
+        /// <returns></returns>
+        public static string getLogMessage(string className, string methodName, string methodParams, string exceptionMessage ) {
+            //return "FROM getLogMessage";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine().Append(" . Class name: ").Append(className);
+            sb.AppendLine().Append(" . MetodName name: ").Append(methodName);
+            sb.AppendLine().Append(" . Metod params: ").Append(methodParams);
+            sb.AppendLine().Append(" . Exception: ").Append(exceptionMessage);
+            return sb.ToString();
         }
-        //class: MethodBase.GetCurrentMethod().DeclaringType
-        //method: System.Reflection.MethodBase.GetCurrentMethod()
     }
 }

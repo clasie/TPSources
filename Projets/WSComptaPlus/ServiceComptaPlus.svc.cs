@@ -43,6 +43,7 @@ using WSComptaPlus.Process;
 using TokenHandler.CustomException;
 using TokenHandler.Constants;
 using System.ServiceModel.Activation;
+using TokenHandler.Utils;
 
 namespace WSComptaPlus
 {
@@ -273,26 +274,30 @@ namespace WSComptaPlus
         //}
 
         #region CashDisc
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="data"></param>
+            /// <returns></returns>
         public List<ERPDynamics.Response> CashDisc(List<CashDiscERP> data)
         {
-            try{
-                ManageAuthAndToken.Instance.ValidateToken();
-                return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
-            }
-            catch (InvalidTokenException ie)
+            try
             {
-                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel, MethodBase.GetCurrentMethod().Name), ie);
-                return TokenHandler.Utils.TokenExceptionFormat.GetResponseForRefusedToken(ie.Message);
+                return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
             }
             catch (Exception ex)
             {
-                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel, MethodBase.GetCurrentMethod().Name), ex);
+                log.Error(FormatMessages.getLogMessage(
+                    this.GetType().Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    string.Concat("List<CashDiscERP> : ", data.ToString()),
+                    ex.ToString()));
                 throw ex;
-            }            
+            }
         }
         #endregion
 
-        #region BusRelSegmentGroup
+            #region BusRelSegmentGroup
         public List<ERPDynamics.Response> BusRelSegmentGroup(List<BusRelSegmentGroupERB> data)
         {
             log.Info(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name));
@@ -302,7 +307,7 @@ namespace WSComptaPlus
 
         #region Login
         /// <summary>
-        /// Le user tente de se logger
+        /// Login against the web.config
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -310,41 +315,59 @@ namespace WSComptaPlus
         {
             try
             {
-                //return new LoginResponse() { Message = System.Security.Principal.WindowsIdentity.GetCurrent().Name };
-                log.Info("Login");
                 return ManageAuthAndToken.Instance.Login(data);
             }
-            catch (Exception ex) {
-                log.Error(string.Format("{0} {1}", TokenKey.MethodCallLabel,MethodBase.GetCurrentMethod().Name), ex);
+            catch (Exception ex)
+            {
+                log.Error(FormatMessages.getLogMessage(
+                    this.GetType().Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    string.Concat("LoginRequest : ", data.ToString()),
+                    ex.ToString()));
                 throw ex;
-            }            
+            }
         }
         #endregion
 
         #endregion
 
         #region Mapping CashDiscERP2CashDisc
-        //[PrincipalPermission(SecurityAction.Demand, Role = "MyApplicationRoleA")]
+        /// <summary>
+        /// Mapping between List of CashDisc and List of CashDiscERP
+        /// </summary>
+        /// <param name="listCashDiscERP"></param>
+        /// <returns></returns>
         private List<CashDisc> CashDiscERP2CashDisc(List<CashDiscERP> listCashDiscERP) {
-
-            //log.Info(string.Format("IN CashDiscERP2CashDisc, listCashDiscERP: {0}", listCashDiscERP.Count));
-
-            List<CashDisc> listCashDisc = listCashDiscERP.Select(p => new CashDisc() {
-                CashDiscCode = p.CashDiscCode,
-                Description = p.Description,
-                ERPOprNumber = p.ERPOprNumber,
-                NumOfDays = p.NumOfDays,
-                StatusQuery = p.StatusQuery,
-                Percent = p.Percent,
-                MainAccountCustomer = p.MainAccountCustomer,
-                MainAccountVendor = p.MainAccountVendor
-            }).ToList();
-
-            return listCashDisc;
+            try { 
+                return listCashDiscERP.Select(p => new CashDisc() {
+                    CashDiscCode = p.CashDiscCode,
+                    Description = p.Description,
+                    ERPOprNumber = p.ERPOprNumber,
+                    NumOfDays = p.NumOfDays,
+                    StatusQuery = p.StatusQuery,
+                    Percent = p.Percent,
+                    MainAccountCustomer = p.MainAccountCustomer,
+                    MainAccountVendor = p.MainAccountVendor
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                log.Error(FormatMessages.getLogMessage(
+                    this.GetType().Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    string.Concat("List<CashDiscERP>: ", listCashDiscERP.ToString()),
+                    ex.ToString()));
+                throw ex;
+            }
         }
         #endregion
 
         #region Mapping BusRelSegmentGroupERB2BusRelSegmentGroup
+        /// <summary>
+        /// Mapping between List of BusRelSegmentGroup and List of BusRelSegmentGroupERB
+        /// </summary>
+        /// <param name="listBusRelSegmentGroupERB"></param>
+        /// <returns></returns>
         private List<BusRelSegmentGroup> BusRelSegmentGroupERB2BusRelSegmentGroup(List<BusRelSegmentGroupERB> listBusRelSegmentGroupERB)
         {
             List<BusRelSegmentGroup> listBusRelSegmentGroup = listBusRelSegmentGroupERB.Select(p => new BusRelSegmentGroup()

@@ -17,8 +17,24 @@ using TokenHandler.Constants;
 namespace TokenHandler
 {
     /// <summary>
+    /// ----------------------------------------------
+    ///             JWT Token protection
+    /// ----------------------------------------------
     /// 
-    /// To inst/uninst jwt
+    /// 1- How is it implemented in this WCF Web service?
+    /// 
+    /// We have an 'Inspector' class method (WSComptaPlus.CustomBehaivious.TokenInspector.BeforeCall())
+    /// targeted to take the hand on each try to consume any WCF interface before entering it if the
+    /// interface method called is decorated wwhith [TokenInspector].
+    /// 
+    /// While hanving the hand the inspector method 'BeforeCall()' call 'ManageAuthAndToken.Instance.ValidateToken();'.
+    /// 
+    /// This 'ValidateToken()' will throw 'TokenHandler.CustomException.InvalidTokenException' if
+    /// the Token passed in Header is not recognized as signed by this web service.
+    /// 
+    /// 2- What is JWT ? https://jwt.io/introduction/
+    /// 
+    /// 3- How to install/uninstall jwt ?
     /// 
     /// uninstall-package newtonsoft.json -force
     /// install-package newtonsoft.json

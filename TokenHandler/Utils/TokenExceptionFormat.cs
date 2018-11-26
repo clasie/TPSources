@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TokenHandler.Constants;
 
 namespace TokenHandler.Utils
 {
@@ -11,13 +12,13 @@ namespace TokenHandler.Utils
     /// </summary>
     public class TokenExceptionFormat
     {
-        public static List<ERPDynamics.Response> GetResponseForRefusedToken(string message) {
+        public static List<ERPDynamics.Response> GetResponseForRefusedToken(string message="") {
             return new List<ERPDynamics.Response>(){
                 new ERPDynamics.Response() {
-                Code = "TODO",
+                Code = "",
                 DynamicsOprNumber = Guid.Empty,
                 ERPOprNumber = Guid.Empty,
-                Message = message
+                Message =  TokenKey.TokenRefusedLabel
             }
             };
         }
@@ -27,6 +28,25 @@ namespace TokenHandler.Utils
                 new ERPDynamics.Response() {
                 Message = message
             }
+            };
+        }
+        public static List<ERPDynamics.Response> GetResponseForError(string message = "")
+        {
+            return new List<ERPDynamics.Response>(){
+                new ERPDynamics.Response() {
+                Code = "",
+                DynamicsOprNumber = Guid.Empty,
+                ERPOprNumber = Guid.Empty,
+                Message =  TokenKey.ServicErrorMinimalMessage
+            }
+            };
+        }
+        public static TokenHandler.Models.LoginResponse GetResponseForErroSimpleElementLogin(string message = "")
+        {
+            return 
+                new TokenHandler.Models.LoginResponse {
+                Code = "",
+                Message =  TokenKey.ServicErrorMinimalMessage            
             };
         }
     }

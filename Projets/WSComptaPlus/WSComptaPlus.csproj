@@ -100,10 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicAuth\Auth.cs" />
-    <Compile Include="CustomBehaivious\PropertyInspector.cs" />
-    <Compile Include="CustomBehaivious\IPropertyInspector.cs" />
-    <Compile Include="CustomBehaivious\MyInspectorAttribute.cs" />
-    <Compile Include="CustomBehaivious\EndpointBehavior.cs" />
+    <Compile Include="CustomBehaivious\TokenInspector.cs" />
     <Compile Include="Models\ApplicationData.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\WsInfoModel.cs" />
