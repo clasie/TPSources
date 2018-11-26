@@ -56,7 +56,6 @@ namespace WSComptaPlus
     public class ServiceComptaPlus : IServiceComptaPlus
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         #region Attribute - settings
         /// <summary>
         /// Obtenir l'environnement.
@@ -283,6 +282,14 @@ namespace WSComptaPlus
         {
             try
             {
+                log.Info("Before -----------> ApplicationData.Instance ");
+                var x = ApplicationData.Instance;
+                var y = x.listUsersTokenAllowed;
+                foreach (var s in y) {
+                    log.Info(" s -> " + s.Name);
+                }
+                log.Info("After -----------> ApplicationData.Instance ");
+
                 return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
             }
             catch (Exception ex)

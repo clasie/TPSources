@@ -49,6 +49,7 @@ namespace WSComptaPlus.CustomBehaivious
         /// <returns></returns>
         public object BeforeCall(string operationName, object[] inputs)
         {
+            log.Info("///////Start//////////BeforeCall////////////////////////");
             try
             {
                 //Challenge the header Token
@@ -74,6 +75,7 @@ namespace WSComptaPlus.CustomBehaivious
                     ex.ToString()));
                 throw new WebFaultException<string>(TokenKey.TokenIssue, HttpStatusCode.Unauthorized);
             }
+            log.Info("///////End//////////BeforeCall////////////////////////");
             return null;
         }
     }
