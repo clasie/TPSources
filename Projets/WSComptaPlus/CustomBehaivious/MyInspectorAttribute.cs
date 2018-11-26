@@ -14,7 +14,7 @@ using WSComptaPlus.Process;
 
 namespace WSComptaPlus.CustomBehaivious
 {
-    public class MyInspectorAttribute : Attribute, IOperationBehavior, IParameterInspector
+    public class MyInspectorAttribute : Attribute, IParameterInspector /*IOperationBehavior,*/
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -49,6 +49,9 @@ namespace WSComptaPlus.CustomBehaivious
 
 
             log.Info("|||||||||||||||||||||||||||||->BeforeCal 2.0");
+            OperationContext current = OperationContext.Current;
+            //var incomingmessageheaders = current.IncomingMessageHeaders;
+            //var outgoingmessageheaders = current.OutgoingMessageHeaders;
             string theAuth = WebOperationContext.Current.IncomingRequest.Headers
                 .GetValues("Authorization")[0].ToString();
 
@@ -64,9 +67,7 @@ namespace WSComptaPlus.CustomBehaivious
             log.Info("Authorization --------> " + theAuth);
             log.Info("|||||||||||||||||||||||||||||<-BeforeCal 2.1");
 
-            throw new WebFaultException<string>(
-                "Token issue", 
-                HttpStatusCode.Unauthorized);
+            throw new WebFaultException<string>("Token issue",HttpStatusCode.Unauthorized);
 
 
             //var x = WebOperationContext.Current.IncomingRequest.GetAcceptHeaderElements().ToList();
