@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TokenHandler.Utils
 {
+    /// <summary>
+    /// Provide a short way to make responses already embeded in a list for tipcal cases.
+    /// </summary>
     public class TokenExceptionFormat
     {
         public static List<ERPDynamics.Response> GetResponseForRefusedToken(string message) {

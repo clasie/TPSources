@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -10,6 +11,7 @@ using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using System.Web;
 using TokenHandler.Constants;
+using TokenHandler.Utils;
 using WSComptaPlus.Process;
 
 namespace WSComptaPlus.CustomBehaivious
@@ -37,63 +39,34 @@ namespace WSComptaPlus.CustomBehaivious
 
         public void AfterCall(string operationName, object[] outputs, object returnValue, object correlationState)
         {
-            log.Info("AfterCall");
-            //string myHeader = WebOperationContext.Current.IncomingRequest.Headers["Authorization"];
-            //log.Info("Validate 8.0 ");
-            //var x = HttpContext.Current.Request;
-            //Console.WriteLine("Operation {0} returned: result = {1}", operationName, returnValue);
         }
 
         public object BeforeCall(string operationName, object[] inputs)
         {
-
-
-            log.Info("|||||||||||||||||||||||||||||->BeforeCal 2.0");
-            OperationContext current = OperationContext.Current;
-            //var incomingmessageheaders = current.IncomingMessageHeaders;
-            //var outgoingmessageheaders = current.OutgoingMessageHeaders;
-            string theAuth = WebOperationContext.Current.IncomingRequest.Headers
-                .GetValues("Authorization")[0].ToString();
-
             try
             {
+                //Challenge the header Token
                 ManageAuthAndToken.Instance.ValidateToken();
             }
-            catch (Exception ex) {
-                log.Info("EXCEPTION 1.0 ---> " + ex.ToString());
+            catch (TokenHandler.CustomException.InvalidTokenException ite) {
+                //We store complete error message
+                log.Error(FormatMessages.getLogMessage(
+                    MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    ite.ToString()));
+                //For security reason we return the minimal info message
+                throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenNotFound);
             }
-
-
-            log.Info("Authorization --------> " + theAuth);
-            log.Info("|||||||||||||||||||||||||||||<-BeforeCal 2.1");
-
-            throw new WebFaultException<string>("Token issue",HttpStatusCode.Unauthorized);
-
-
-            //var x = WebOperationContext.Current.IncomingRequest.GetAcceptHeaderElements().ToList();
-            //Console.WriteLine(" -1-> Calling {0} with the following parameters:", operationName);
-            //foreach (var xelemen in x)
-            //{
-            //    log.Info(string.Format("--> 1 From list: {0}", xelemen.ToString()));
-            //}
-
-            //var authHeader = WebOperationContext.Current.IncomingRequest.Headers.
-            //    .GetValues("Authorization")[0].ToString();
-            //Console.WriteLine(" -2-> Calling {0} with the following parameters:", operationName);
-            //foreach (var xelemen in x2)
-            //{
-            //    log.Info(string.Format("--> 2 From list: {0}", x2.GetValues("Authorization")[0].ToString()));
-            //}
-
-            //log.Info("BeforeCall 2.1");
-
-
-            //for (int i = 0; i < inputs.Length; i++)
-            //{
-            //    log.Info(string.Format(" [{0}] = {1}", i, inputs[i]));
-            //    //Console.WriteLine(" [{0}] = {1}", i, inputs[i]);
-            //}
-
+            catch (Exception ex)
+            {
+                //We store complete error message
+                log.Error(FormatMessages.getLogMessage(
+                    MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    ex.ToString()));
+                //For security reason we return the minimal info message
+                throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenNotFound);
+            }
             return null;
         }
     }
