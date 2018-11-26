@@ -49,7 +49,6 @@ namespace WSComptaPlus.CustomBehaivious
         /// <returns></returns>
         public object BeforeCall(string operationName, object[] inputs)
         {
-            log.Info("///////////////BeforeCall/////////////////");
             try
             {
                 //Challenge the header Token
@@ -57,6 +56,7 @@ namespace WSComptaPlus.CustomBehaivious
             }
             catch (TokenHandler.CustomException.InvalidTokenException ite)
             {
+                //we refuse the Token sent in the header for Token calculation reason
                 log.Error(FormatMessages.getLogMessage(
                     this.GetType().Name,
                     System.Reflection.MethodBase.GetCurrentMethod().Name,
@@ -66,6 +66,7 @@ namespace WSComptaPlus.CustomBehaivious
             }
             catch (Exception ex)
             {
+                //we refuse the Token sent in the header for Token unexpected reason
                 log.Error(FormatMessages.getLogMessage(
                     this.GetType().Name,
                     System.Reflection.MethodBase.GetCurrentMethod().Name,

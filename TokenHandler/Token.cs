@@ -17,9 +17,11 @@ using TokenHandler.Constants;
 namespace TokenHandler
 {
     /// <summary>
+    /// 
     /// ----------------------------------------------
     ///             JWT Token protection
     /// ----------------------------------------------
+    /// 
     /// 
     /// 1- How is it implemented in this WCF Web service?
     /// 
@@ -32,7 +34,9 @@ namespace TokenHandler
     /// This 'ValidateToken()' will throw 'TokenHandler.CustomException.InvalidTokenException' if
     /// the Token passed in Header is not recognized as signed by this web service.
     /// 
+    /// 
     /// 2- What is JWT ? https://jwt.io/introduction/
+    /// 
     /// 
     /// 3- How to install/uninstall jwt ?
     /// 
@@ -40,16 +44,8 @@ namespace TokenHandler
     /// install-package newtonsoft.json
     /// 
     /// </summary>
-    public class Token //: DelegatingHandler
+    public class Token
     {
-        private static readonly Lazy<Token> lazy =
-            new Lazy<Token>(() => new Token());
-
-        public static Token Instance { get { return lazy.Value; } }
-
-        private Token()
-        {
-        } 
         public string GetKeyInHeader()
         {
             return WebOperationContext.Current.IncomingRequest.Headers
@@ -61,7 +57,7 @@ namespace TokenHandler
                 authHeader.Substring(7) : authHeader;
 
         }
-        private static bool TryRetrieveToken(HttpRequestMessage request, out string token)
+        private bool TryRetrieveToken(HttpRequestMessage request, out string token)
         {
             token = null;
             IEnumerable<string> authzHeaders;

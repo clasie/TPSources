@@ -8,7 +8,7 @@ using TokenHandler.Constants;
 namespace TokenHandler.Utils
 {
     /// <summary>
-    /// Provide a short way to make responses already embeded in a list for tipcal cases.
+    /// Provide a short way to make custom messages responses already embeded in a list.
     /// </summary>
     public class TokenExceptionFormat
     {

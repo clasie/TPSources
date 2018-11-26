@@ -10,15 +10,15 @@ namespace ConsoleTestDebugRAND
     {
         static void Main(string[] args)
         {
-            //var x = TokenHandler.Token
-            //    .Instance.CheckTokenValidity(
-            //        TokenHandler.Constants.TokenKey.GeneratedKeyToTest);
-            var newKey = TokenHandler.Token.Instance.createToken("");
+            ////var x = TokenHandler.Token
+            ////    .Instance.CheckTokenValidity(
+            ////        TokenHandler.Constants.TokenKey.GeneratedKeyToTest);
+            //var newKey = TokenHandler.Token.Instance.createToken("");
 
-            var y = TokenHandler.Token.Instance.CheckTokenValidity(
-                   //TokenHandler.Constants.TokenKey.GeneratedKeyToTest
-                   newKey
-                ).IsValidKey;
+            //var y = TokenHandler.Token.Instance.CheckTokenValidity(
+            //       //TokenHandler.Constants.TokenKey.GeneratedKeyToTest
+            //       newKey
+            //    ).IsValidKey;
         }
     }
 }

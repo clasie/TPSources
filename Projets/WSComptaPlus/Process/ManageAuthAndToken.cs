@@ -13,43 +13,50 @@ using WSComptaPlus.Models;
 
 namespace WSComptaPlus.Process
 {
+    /// <summary>
+    /// Orchestrates the businee process of Login/Token authentification/creation
+    /// </summary>
     public class ManageAuthAndToken
     {
-        private static readonly Lazy<ManageAuthAndToken> lazy =
-            new Lazy<ManageAuthAndToken>(() => new ManageAuthAndToken());
-
-        public static ManageAuthAndToken Instance { get { return lazy.Value; } }
-
-        private ManageAuthAndToken()
-        {
-        }
         /// <summary>
-        /// Get a token if the user exists.
+        /// Simplifies the call
+        /// </summary>
+        public static ManageAuthAndToken Instance { get { return new ManageAuthAndToken(); } }
+
+        /// <summary>
+        /// Verify if the user exists
         /// </summary>
         /// <returns></returns>
         public LoginResponse Login(TokenHandler.Models.LoginRequest data) {
-
-            return ((BasicAuth.Auth.Instance.UserExists(new User() { Name = data.Username, PassWord = data.Password })).Exists)?         
-                new TokenHandler.Models.LoginResponse { Token = Token.Instance.createToken(data.Username), Message = TokenKey.MessageTokenForUser, Code = TokenKey.CodeUserExists } ://user found -> get new Token
-                new TokenHandler.Models.LoginResponse { Token = string.Empty, Message = TokenKey.MessageNoTokenForUnknownUser, Code = TokenKey.CodeUnknownUser };//no user found -> no token            
+            var token = new Token();
+            return ((BasicAuth.Auth.Instance.UserExists(new User() { Name = data.Username, PassWord = data.Password })).Exists)?      
+                //We found the user, we create a token  and send it to him   
+                new TokenHandler.Models.LoginResponse { Token = token.createToken(data.Username), Message = TokenKey.MessageTokenForUser, Code = TokenKey.CodeUserExists } :
+                //user not found, we provide a message explaning
+                new TokenHandler.Models.LoginResponse { Token = string.Empty, Message = TokenKey.MessageNoTokenForUnknownUser, Code = TokenKey.CodeUnknownUser };         
         }
         /// <summary>
         /// 
         /// </summary>
         public void ValidateToken() {
-
-            string resultValidation = Token.Instance.GetKeyInHeader();
-            string regexKey = TokenKey.TokenPrefix;
-            Regex regex = new Regex(regexKey);
+            //Get the Autorization header content if any.
+            var token = new Token();
+            string resultValidation = token.GetKeyInHeader();
+            Regex regex = new Regex(TokenKey.TokenPrefix);
             Match match = regex.Match(resultValidation);
             string tokenFound = "";
+            //This header is satifying the prefix constraint (== TokenKey.TokenPrefix) 
             if (match.Success)
             {
-                tokenFound = Token.Instance.GetTokenFromAuthHeaderString(resultValidation);
-                if (!Token.Instance.CheckTokenValidity(tokenFound).IsValidKey) {
+                //Extract the Token
+                tokenFound = token.GetTokenFromAuthHeaderString(resultValidation);
+                //The tokebn is valid
+                if (!token.CheckTokenValidity(tokenFound).IsValidKey) {
+                    //Token refused
                     throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenInvalid);
                 }
             } else {
+                //The prefix token is not accepted.
                 throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenNotFound);
             }
         }
