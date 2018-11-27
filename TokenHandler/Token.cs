@@ -46,30 +46,42 @@ namespace TokenHandler
     /// </summary>
     public class Token
     {
+        /// <summary>
+        /// Get the complete Authorization string from the header if any.
+        /// </summary>
+        /// <returns></returns>
         public string GetKeyInHeader()
         {
-            return WebOperationContext.Current.IncomingRequest.Headers
-                .GetValues("Authorization")[TokenKey.ExpectedPlaceToFindHeader].ToString();
+            string header = string.Empty;
+            try
+            {
+                header = WebOperationContext.Current.IncomingRequest.Headers.GetValues(TokenKey.HeaderTokenToUse)[TokenKey.ExpectedPlaceToFindHeader].ToString();
+
+            }
+            catch (Exception) {
+                header = TokenKey.TokenNotFound;
+                //TODO ajouter log
+            }
+            return header;
         }
+        /// <summary>
+        /// Extract the Token without the secret header == TokenKey.TokenPrefixRaw
+        /// </summary>
+        /// <param name="authHeader"></param>
+        /// <returns></returns>
         public string GetTokenFromAuthHeaderString(string authHeader)
         {
             return authHeader.StartsWith(TokenHandler.Constants.TokenKey.PrefixSetByTheCallerBeforeTheKey) ?
-                authHeader.Substring(7) : authHeader;
+                authHeader.Substring(TokenKey.TokenPrefixRaw.Length) : authHeader;
 
         }
-        private bool TryRetrieveToken(HttpRequestMessage request, out string token)
-        {
-            token = null;
-            IEnumerable<string> authzHeaders;
-            if (!request.Headers.TryGetValues(TokenKey.HeaderTokenToUse, out authzHeaders) || authzHeaders.Count() > 1)
-            {
-                return false;
-            }
-            var bearerToken = authzHeaders.ElementAt(0);
-            token = bearerToken.StartsWith(TokenHandler.Constants.TokenKey.PrefixSetByTheCallerBeforeTheKey) ? 
-                bearerToken.Substring(TokenKey.TokenPrefixRaw.Length) : bearerToken;
-            return true;
-        }
+        /// <summary>
+        /// Operates typical JWT checks on valid dates ans other values.
+        /// The only way to know if the token is valid is the NONE throwing 
+        /// exception possibly launched by the JWT library.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public TokenHandler.Models.TokenCheckResult CheckTokenValidity(string token)
         {
             TokenHandler.Models.TokenCheckResult tokenCheckResult = new TokenHandler.Models.TokenCheckResult();
@@ -110,9 +122,17 @@ namespace TokenHandler
                 throw new TokenHandler.CustomException.InvalidTokenException(TokenKey.TokenNotFound);
 
             }
+            //If we reach this place means the token has been validated by JWT.
             return tokenCheckResult;
         }
-
+        /// <summary>
+        /// Verify the dates constrains made when the token was created.
+        /// </summary>
+        /// <param name="notBefore"></param>
+        /// <param name="expires"></param>
+        /// <param name="securityToken"></param>
+        /// <param name="validationParameters"></param>
+        /// <returns></returns>
         public bool LifetimeValidator(DateTime? notBefore, DateTime? expires, Microsoft.IdentityModel.Tokens.SecurityToken securityToken, TokenValidationParameters validationParameters)
         {
             if (expires != null)
@@ -121,7 +141,11 @@ namespace TokenHandler
             }
             return false;
         }
-
+        /// <summary>
+        /// The very place where the token is created.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public string createToken(string username)
         {
             //Set issued at date

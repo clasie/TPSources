@@ -39,11 +39,11 @@ namespace TokenHandler.Constants
         public const string ServicErrorMinimalMessage = "Error occured on service";     
         public const string CodeUnknownUser = "10001";
         public const string MessageNoTokenForUnknownUser = "No token, the user is unknown";
-        public const string TokenInvalid = "Token not valid, please log in before using the services.";
-        public const string TokenNotFound = "Token not found, please log in before using the services.";
+        public const string TokenInvalid = "Token not valid.";
+        public const string TokenNotFound = "Token not found.";
         public const string CustomExceptionLabel = "Custom exception";
         public const string NoTokenCreatedLabel = "No token created";
         public const string TokenRefusedLabel = "Token refused";
-        public const string TokenIssue = "Token Issue";        
+        public const string TokenIssue = "Token Issue";
     }
 }
