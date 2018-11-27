@@ -60,6 +60,7 @@ namespace WSComptaPlus
         /// <summary>
         /// Obtenir l'environnement.
         /// </summary>
+        private ApplicationData applicationData = ApplicationData.Instance;
         private static string Environment => GetConfig("Environment", "");
         private static TypeEnvironment EnvironmentEnum => (TypeEnvironment)Enum.Parse(typeof(TypeEnvironment), GetConfig("EnvironmentEnum", ""));
         /// <summary>
@@ -83,23 +84,23 @@ namespace WSComptaPlus
         {
             return GetConfig($"{Environment}.{key}");
         }
-        private ERPDynamics.ClientConfiguration GetEnv() {
-            return new ERPDynamics.ClientConfiguration()
-            {
-                UriString = GetEnvironmentConfig("UriString"),
-                ActiveDirectoryResource = GetEnvironmentConfig("ActiveDirectoryResource"),
-                ActiveDirectoryTenant = GetEnvironmentConfig("ActiveDirectoryTenant"),
-                ActiveDirectoryClientAppId = GetEnvironmentConfig("ActiveDirectoryClientAppId"),
-                ActiveDirectoryClientAppSecret = GetEnvironmentConfig("ActiveDirectoryClientAppSecret"),
-                //added
-                ActiveDirectoryTenantId = GetEnvironmentConfig("ActiveDirectoryTenantId"),
-                D365SalesUri = GetEnvironmentConfig("D365SalesUri"),
-                D365SalesClientId = GetEnvironmentConfig("D365SalesClientId"),
-                D365SalesClientKey = GetEnvironmentConfig("D365SalesClientKey"),
-                ServiceGroup = GetConfig("ServiceGroup"),
-                TLSVersion = ""
-            };
-        }
+        //private ERPDynamics.ClientConfiguration GetEnv() {
+        //    return new ERPDynamics.ClientConfiguration()
+        //    {
+        //        UriString = GetEnvironmentConfig("UriString"),
+        //        ActiveDirectoryResource = GetEnvironmentConfig("ActiveDirectoryResource"),
+        //        ActiveDirectoryTenant = GetEnvironmentConfig("ActiveDirectoryTenant"),
+        //        ActiveDirectoryClientAppId = GetEnvironmentConfig("ActiveDirectoryClientAppId"),
+        //        ActiveDirectoryClientAppSecret = GetEnvironmentConfig("ActiveDirectoryClientAppSecret"),
+        //        //added
+        //        ActiveDirectoryTenantId = GetEnvironmentConfig("ActiveDirectoryTenantId"),
+        //        D365SalesUri = GetEnvironmentConfig("D365SalesUri"),
+        //        D365SalesClientId = GetEnvironmentConfig("D365SalesClientId"),
+        //        D365SalesClientKey = GetEnvironmentConfig("D365SalesClientKey"),
+        //        ServiceGroup = GetConfig("ServiceGroup"),
+        //        TLSVersion = ""
+        //    };
+        //}
         #endregion
 
         #region membres
@@ -290,7 +291,8 @@ namespace WSComptaPlus
                 }
                 log.Info("After -----------> ApplicationData.Instance ");
 
-                return LinkDynamics.CallDynamicsCashDisc(GetEnv(), CashDiscERP2CashDisc(data));//envoyer vers AZURE
+                return LinkDynamics.CallDynamicsCashDisc(ApplicationData.Instance.GetClientConfiguration(), 
+                    CashDiscERP2CashDisc(data));//envoyer vers AZURE
             }
             catch (Exception ex)
             {
@@ -308,7 +310,8 @@ namespace WSComptaPlus
         public List<ERPDynamics.Response> BusRelSegmentGroup(List<BusRelSegmentGroupERB> data)
         {
             log.Info(string.Format("Method Called: {0}", MethodBase.GetCurrentMethod().Name));
-            return LinkDynamics.CallDynamicsBusRelSegmentGroup(GetEnv(), BusRelSegmentGroupERB2BusRelSegmentGroup(data));//envoyer vers AZURE
+            return LinkDynamics.CallDynamicsBusRelSegmentGroup(ApplicationData.Instance.GetClientConfiguration(), 
+                BusRelSegmentGroupERB2BusRelSegmentGroup(data));//envoyer vers AZURE
         }
         #endregion
 
@@ -322,7 +325,9 @@ namespace WSComptaPlus
         {
             try
             {
-                return ManageAuthAndToken.Instance.Login(data);
+                applicationData.ToLogInfo("1.0");
+                var manageAuthAndToken = new ManageAuthAndToken();
+                return manageAuthAndToken.Login(data);
             }
             catch (Exception ex)
             {

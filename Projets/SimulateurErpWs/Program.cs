@@ -114,7 +114,11 @@ namespace SimulateurErpWs
             var tableReferenceService = new TableReferenceService(clientConfiguration);
 
             #region Test Login avec recup token
-            //var responseLogin = tableReferenceService.Login( new TokenHandler.Models.LoginRequest { Username = "toto", Password = "titi"} );
+            var responseLogin = tableReferenceService.Login( 
+                new TokenHandler.Models.LoginRequest
+                {
+                    Username = "user1",
+                    Password = "pwuser1" } );
             #endregion
 
 

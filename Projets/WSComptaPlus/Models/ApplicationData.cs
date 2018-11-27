@@ -22,8 +22,8 @@ namespace WSComptaPlus.Models
 
         private ApplicationData()
         {
-            log.Info("Before ooooooooooooo->> ApplicationData.Instance -> in ApplicationData ");
-            //GetEnv();
+            log.Info("Contructor ApplicationData called.");
+            GetEnv();
             FillUpUsersTokenAllowed();
         }
         #region Attribute - settings
@@ -42,6 +42,13 @@ namespace WSComptaPlus.Models
         {
             var v = System.Configuration.ConfigurationManager.AppSettings[key];
             return (!string.IsNullOrEmpty(v)) ? v : defaultValue;
+        }
+        public void ToLogInfo(string message="") {
+            log.Info("LogInfo  ----> Message: " + message );
+            log.Info(" listUsersTokenAllowed.Count: " + listUsersTokenAllowed.Count);
+            log.Info(" clientConfiguration.UriString: " + clientConfiguration.UriString);
+            log.Info(" clientConfiguration.ActiveDirectoryResource: " + clientConfiguration.ActiveDirectoryResource);
+            log.Info(" clientConfiguration.ActiveDirectoryTenant: " + clientConfiguration.ActiveDirectoryTenant);
         }
         /// <summary>
         /// Obtenir les informations sur l'environnement.
@@ -72,7 +79,25 @@ namespace WSComptaPlus.Models
             };
         }
         #endregion
-        
+
+        internal User UserExists(User user)
+        {
+            User userFound = listUsersTokenAllowed.Find(c => c.Name == user.Name && c.PassWord == user.PassWord);
+            if (userFound != null)
+            {
+                log.Info(". UserExists() -> True");
+                userFound.Exists = true;
+            }
+            else
+            {
+                log.Info(". UserExists() -> False");
+                userFound.Exists = false;
+            }
+            return userFound;
+        }
+        public ERPDynamics.ClientConfiguration GetClientConfiguration() {
+            return clientConfiguration;
+        }
         private void ParseUsersFromConfigString(string usersString) {
         }
         private void FillUpUsersTokenAllowed()

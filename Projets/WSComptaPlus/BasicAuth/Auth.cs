@@ -18,16 +18,11 @@ namespace WSComptaPlus.BasicAuth
         }
         public User UserExists(User user)
         {
-           return UserExistsInDb(user);
+           return UserExistsInConfig(user);
         }
-        private User  UserExistsInDb(User user)
+        private User  UserExistsInConfig(User user)
         {
-            //TODO call DB/config, ok  on est dans le context web -> charger la config en mémoire!
-            //...
-            //HttpContext.Application.Add("a",new Object());
-            //HttpContext.Application.Add("", new object());
-            user.Exists = false;
-            return user;
+            return ApplicationData.Instance.UserExists(user);
         }
     }
 }
