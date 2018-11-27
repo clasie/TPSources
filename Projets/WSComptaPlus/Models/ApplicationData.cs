@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Configuration;
+using System.Text;
 
 namespace WSComptaPlus.Models
 {
@@ -43,12 +44,45 @@ namespace WSComptaPlus.Models
             var v = System.Configuration.ConfigurationManager.AppSettings[key];
             return (!string.IsNullOrEmpty(v)) ? v : defaultValue;
         }
-        public void ToLogInfo(string message="") {
-            log.Info("LogInfo  ----> Message: " + message );
-            log.Info(" listUsersTokenAllowed.Count: " + listUsersTokenAllowed.Count);
-            log.Info(" clientConfiguration.UriString: " + clientConfiguration.UriString);
-            log.Info(" clientConfiguration.ActiveDirectoryResource: " + clientConfiguration.ActiveDirectoryResource);
-            log.Info(" clientConfiguration.ActiveDirectoryTenant: " + clientConfiguration.ActiveDirectoryTenant);
+        /// <summary>
+        /// Called to trace if config is well read.
+        /// </summary>
+        /// <param name="message"></param>
+        public void ToLogInfo(string message="Empty") {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine("||||||||||||||||||||||||||||||||||||||||||||||||||||");
+            sb.AppendLine(string.Format(" ApplicationData.LogInfo  ----> Message: {0}",message));
+            sb.AppendLine("||||||||||||||||||||||||||||||||||||||||||||||||||||");
+            sb.AppendLine();
+            sb.AppendLine("Environment");
+            sb.AppendLine("------------");
+            sb.AppendLine(string.Format("Environment: {0} ", Environment));
+            sb.AppendLine();
+            sb.AppendLine("Liste des users dans la config");
+            sb.AppendLine("------------------------------");
+            foreach (var user in listUsersTokenAllowed) {
+                sb.AppendLine(string.Format(" . User name: {0} ", user.Name));
+            }
+            sb.AppendLine();
+            sb.AppendLine("clientConfiguration");
+            sb.AppendLine("--------------------");
+            sb.AppendLine(" clientConfiguration.UriString: " + clientConfiguration.UriString);
+            sb.AppendLine(" clientConfiguration.ActiveDirectoryResource: " + clientConfiguration.ActiveDirectoryResource);
+            sb.AppendLine(" clientConfiguration.ActiveDirectoryTenant: " + clientConfiguration.ActiveDirectoryTenant);
+            sb.AppendLine(" clientConfiguration.ActiveDirectoryClientAppId: " + clientConfiguration.ActiveDirectoryClientAppId);
+            sb.AppendLine(" clientConfiguration.ActiveDirectoryClientAppSecret: " + clientConfiguration.ActiveDirectoryClientAppSecret);
+            sb.AppendLine("new values ...");
+            sb.AppendLine(" clientConfiguration.ActiveDirectoryTenantId: " + clientConfiguration.ActiveDirectoryTenantId);
+            sb.AppendLine(" clientConfiguration.D365SalesUri: " + clientConfiguration.D365SalesUri);
+            sb.AppendLine(" clientConfiguration.D365SalesClientId: " + clientConfiguration.D365SalesClientId);
+            sb.AppendLine(" clientConfiguration.D365SalesClientKey: " + clientConfiguration.D365SalesClientKey);
+            sb.AppendLine(" clientConfiguration.ServiceGroup: " + clientConfiguration.ServiceGroup);
+            sb.AppendLine(" clientConfiguration.TLSVersion: " + clientConfiguration.TLSVersion);
+            sb.AppendLine();
+            log.Info(sb.ToString());
+
         }
         /// <summary>
         /// Obtenir les informations sur l'environnement.

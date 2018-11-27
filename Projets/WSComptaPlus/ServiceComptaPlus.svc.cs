@@ -283,14 +283,6 @@ namespace WSComptaPlus
         {
             try
             {
-                log.Info("Before -----------> ApplicationData.Instance ");
-                var x = ApplicationData.Instance;
-                var y = x.listUsersTokenAllowed;
-                foreach (var s in y) {
-                    log.Info(" s -> " + s.Name);
-                }
-                log.Info("After -----------> ApplicationData.Instance ");
-
                 return LinkDynamics.CallDynamicsCashDisc(ApplicationData.Instance.GetClientConfiguration(), 
                     CashDiscERP2CashDisc(data));//envoyer vers AZURE
             }
@@ -325,7 +317,7 @@ namespace WSComptaPlus
         {
             try
             {
-                applicationData.ToLogInfo("1.0");
+                applicationData.ToLogInfo();
                 var manageAuthAndToken = new ManageAuthAndToken();
                 return manageAuthAndToken.Login(data);
             }
