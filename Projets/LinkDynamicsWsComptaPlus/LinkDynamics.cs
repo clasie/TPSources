@@ -11,7 +11,9 @@ namespace LinkDynamicsWsComptaPlus
 {
     public static class LinkDynamics
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenHandler.Constants.TokenKey.NormalLogsNameSpace);
+        private static readonly log4net.ILog logInOut = log4net.LogManager.GetLogger(TokenHandler.Constants.TokenKey.WebInOutLogsNameSpace);
+        public static object TokenKey { get; private set; }
 
         #region CallDynamicsCashDisc
         /// <summary>

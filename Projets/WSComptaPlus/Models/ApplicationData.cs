@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Configuration;
 using System.Text;
+using TokenHandler.Constants;
 
 namespace WSComptaPlus.Models
 {
@@ -14,7 +15,9 @@ namespace WSComptaPlus.Models
     /// </summary>
     public class ApplicationData
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenKey.NormalLogsNameSpace);
+        private static readonly log4net.ILog logInOut = log4net.LogManager.GetLogger(TokenKey.WebInOutLogsNameSpace);
+
         private ERPDynamics.ClientConfiguration clientConfiguration = new ERPDynamics.ClientConfiguration();
         private static readonly Lazy<ApplicationData> lazy = new Lazy<ApplicationData>(() => new ApplicationData());
         public List<User> listUsersTokenAllowed = new List<User>() { };

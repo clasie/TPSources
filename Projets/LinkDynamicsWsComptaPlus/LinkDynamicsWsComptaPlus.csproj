@@ -65,6 +65,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TokenHandler\TokenHandler.csproj">
+      <Project>{a7363cb8-5b4b-4047-91ae-b8ed9d6641e1}</Project>
+      <Name>TokenHandler</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

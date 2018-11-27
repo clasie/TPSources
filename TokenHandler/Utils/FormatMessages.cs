@@ -17,13 +17,21 @@ namespace TokenHandler.Utils
         /// <param name="exceptionMessage"></param>
         /// <returns></returns>
         public static string getLogMessage(string className, string methodName, string methodParams, string exceptionMessage ) {
-            //return "FROM getLogMessage";
             StringBuilder sb = new StringBuilder();
             sb.AppendLine().Append(" . Class name: ").Append(className);
             sb.AppendLine().Append(" . MetodName name: ").Append(methodName);
             sb.AppendLine().Append(" . Metod params: ").Append(methodParams);
             sb.AppendLine().Append(" . Exception: ").Append(exceptionMessage);
             return sb.ToString();
+        }
+        public static string GetFormatedReflection(string title, string reflectedInfo)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine().Append("|||||||||||>>>>|||||||||||||").Append(title).Append("||||||||||||||||||||||");
+            sb.AppendLine().Append(reflectedInfo);
+            sb.AppendLine().Append("|||||||||||<<<<|||||||||||||||||||||||||||||||||||");
+            sb.AppendLine().AppendLine();
+            return sb.ToString();        
         }
     }
 }

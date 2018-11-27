@@ -8,6 +8,13 @@ namespace TokenHandler.Constants
 {
     public static class TokenKey
     {
+        //log4net namespaces
+        public const string NormalLogsNameSpace = "NormalLogs"; 
+        public const string WebInOutLogsNameSpace = "WebInOutLogs";
+        public static string TokenAccessNameSpace = "TokenAccessLogs";
+        public const string TokenVerification = "Token verification";
+        public const string IN = "IN";
+        public const string OUT = "OUT";
         //Config when creating a Token
         public const int TokenDaysLive = 7;
         public const string Issuer = "http://localhost:50191";
@@ -37,9 +44,6 @@ namespace TokenHandler.Constants
         public const string CustomExceptionLabel = "Custom exception";
         public const string NoTokenCreatedLabel = "No token created";
         public const string TokenRefusedLabel = "Token refused";
-        public const string TokenIssue = "Token Issue";
-
-
-
+        public const string TokenIssue = "Token Issue";        
     }
 }

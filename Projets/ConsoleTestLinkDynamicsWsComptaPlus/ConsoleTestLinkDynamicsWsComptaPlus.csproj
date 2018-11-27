@@ -79,6 +79,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TokenHandler\TokenHandler.csproj">
+      <Project>{a7363cb8-5b4b-4047-91ae-b8ed9d6641e1}</Project>
+      <Name>TokenHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LinkDynamicsWsComptaPlus\LinkDynamicsWsComptaPlus.csproj">
       <Project>{5BDACDE3-5BD8-4608-AED6-9EA258558D08}</Project>
       <Name>LinkDynamicsWsComptaPlus</Name>

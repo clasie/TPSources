@@ -52,10 +52,10 @@ namespace WSComptaPlus
     /// <summary>
     /// Service :   Gestion des appels et demandes pour la comptabilité Thomas & Piron (Compta Plus)
     /// </summary>
-    //[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
     public class ServiceComptaPlus : IServiceComptaPlus
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenKey.NormalLogsNameSpace);
+        private static readonly log4net.ILog logInOut = log4net.LogManager.GetLogger(TokenKey.WebInOutLogsNameSpace);
         #region Attribute - settings
         /// <summary>
         /// Obtenir l'environnement.
@@ -283,8 +283,13 @@ namespace WSComptaPlus
         {
             try
             {
-                return LinkDynamics.CallDynamicsCashDisc(ApplicationData.Instance.GetClientConfiguration(), 
-                    CashDiscERP2CashDisc(data));//envoyer vers AZURE
+                //In-Out trafic: logged in separate file(IN)
+                logInOut.Info(FormatMessages.GetFormatedReflection(TokenKey.IN, Reflection.GetReflection().GetValues(data)));
+                //Envoyer vers AZURE
+                List<ERPDynamics.Response> listResp =  LinkDynamics.CallDynamicsCashDisc(ApplicationData.Instance.GetClientConfiguration(), CashDiscERP2CashDisc(data));
+                //In-Out trafic: logged in separate file(OUTT)
+                logInOut.Info(FormatMessages.GetFormatedReflection(TokenKey.OUT, Reflection.GetReflection().GetValues(listResp)));
+                return listResp;
             }
             catch (Exception ex)
             {

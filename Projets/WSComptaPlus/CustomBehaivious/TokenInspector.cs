@@ -18,7 +18,10 @@ namespace WSComptaPlus.CustomBehaivious
 {
     public class TokenInspector : Attribute, IParameterInspector ,IOperationBehavior
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenKey.NormalLogsNameSpace);
+        private static readonly log4net.ILog logInOut = log4net.LogManager.GetLogger(TokenKey.WebInOutLogsNameSpace);
+        private static readonly log4net.ILog logTokenAccess = log4net.LogManager.GetLogger(TokenKey.TokenAccessNameSpace);
+        
 
         public void AddBindingParameters(OperationDescription operationDescription, BindingParameterCollection bindingParameters)
         {
@@ -49,7 +52,8 @@ namespace WSComptaPlus.CustomBehaivious
         /// <returns></returns>
         public object BeforeCall(string operationName, object[] inputs)
         {
-            log.Info("///////Start//////////BeforeCall////////////////////////");
+
+            logTokenAccess.Info("///////Start//////////BeforeCall////////////////////////");
             try
             {
                 //Challenge the header Token
@@ -58,7 +62,7 @@ namespace WSComptaPlus.CustomBehaivious
             catch (TokenHandler.CustomException.InvalidTokenException ite)
             {
                 //we refuse the Token sent in the header for Token calculation reason
-                log.Error(FormatMessages.getLogMessage(
+                logTokenAccess.Error(FormatMessages.getLogMessage(
                     this.GetType().Name,
                     System.Reflection.MethodBase.GetCurrentMethod().Name,
                     string.Concat("operationName: ", operationName, " inputs: ", inputs.ToString()),
@@ -68,14 +72,14 @@ namespace WSComptaPlus.CustomBehaivious
             catch (Exception ex)
             {
                 //we refuse the Token sent in the header for Token unexpected reason
-                log.Error(FormatMessages.getLogMessage(
+                logTokenAccess.Error(FormatMessages.getLogMessage(
                     this.GetType().Name,
                     System.Reflection.MethodBase.GetCurrentMethod().Name,
                     string.Concat("operationName: ", operationName, " inputs: ", inputs.ToString()),
                     ex.ToString()));
                 throw new WebFaultException<string>(TokenKey.TokenIssue, HttpStatusCode.Unauthorized);
             }
-            log.Info("///////End//////////BeforeCall////////////////////////");
+            logTokenAccess.Info("///////End//////////BeforeCall////////////////////////");
             return null;
         }
     }

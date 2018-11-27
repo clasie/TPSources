@@ -207,7 +207,7 @@ namespace SideWsComptaPlus.Services
                 //httpWebRequest.Timeout = (120);
                 httpWebRequest.ContentType = "application/json; charset=utf-8; ";
                 httpWebRequest.Method = "POST";
-                httpWebRequest.Headers.Add("Authorization", "Bearer " + TokenKey.GeneratedKeyToTest); // "0123456789");
+                httpWebRequest.Headers.Add("Authorization", "Bxearer " + TokenKey.GeneratedKeyToTest); // "0123456789");
                 //httpWebRequest.Headers.Add("From", "user@example.com");
 
                var json = JsonHelp.JsonSerialize(dRequest);
