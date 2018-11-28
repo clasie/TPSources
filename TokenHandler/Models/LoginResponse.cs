@@ -11,9 +11,7 @@ namespace TokenHandler.Models
     {
         public LoginResponse()
         {
-
             this.Token = "";
-            //this.HttpResponseMsg = new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.Unauthorized };
         }
 
         public string Token { get; set; }

@@ -36,6 +36,9 @@
     <Reference Include="ERPDynamics">
       <HintPath>..\..\..\..\..\SVNTP\TP\Sources\DLLs\ERPDynamics.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\ReferencedAssemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.4\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
@@ -70,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ServiceRequestAttribute.cs" />
     <Compile Include="Constants\TokenKey.cs" />
     <Compile Include="CustomException\InvalidTokenException.cs" />
     <Compile Include="Models\TokenCheckResult.cs" />
@@ -83,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="log4net.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

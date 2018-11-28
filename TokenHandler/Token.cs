@@ -46,11 +46,12 @@ namespace TokenHandler
     /// </summary>
     public class Token
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenKey.NormalLogsNameSpace);
         /// <summary>
         /// Get the complete Authorization string from the header if any.
         /// </summary>
         /// <returns></returns>
-        public string GetKeyInHeader()
+        public string GetTokenInHeader()
         {
             string header = string.Empty;
             try
@@ -82,12 +83,12 @@ namespace TokenHandler
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public TokenHandler.Models.TokenCheckResult CheckTokenValidity(string token)
+        public TokenHandler.Models.TokenCheckResult CheckTokenValidity(string token, string privateKey)
         {
             TokenHandler.Models.TokenCheckResult tokenCheckResult = new TokenHandler.Models.TokenCheckResult();
             try
             {
-                const string sec = TokenHandler.Constants.TokenKey.PrivateKey;
+                string sec = privateKey;
                 var now = DateTime.UtcNow;
                 var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
                 Microsoft.IdentityModel.Tokens.SecurityToken securityToken;
@@ -146,12 +147,12 @@ namespace TokenHandler
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public string createToken(string username)
+        public string createToken(string username, int tokenDaysLife, string privateKey)
         {
             //Set issued at date
             DateTime issuedAt = DateTime.UtcNow;
             //set the time when it expires
-            DateTime expires = DateTime.UtcNow.AddDays(TokenKey.TokenDaysLive);
+            DateTime expires = DateTime.UtcNow.AddDays(tokenDaysLife);
 
             //To encrypt the private token -> http://stackoverflow.com/questions/18223868/how-to-encrypt-jwt-security-token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -161,7 +162,7 @@ namespace TokenHandler
             {
                 new Claim(ClaimTypes.Name, username)
             });
-            const string sec = TokenHandler.Constants.TokenKey.PrivateKey;
+            string sec = privateKey;
             var now = DateTime.UtcNow;
             var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
             var signingCredentials 
@@ -179,7 +180,6 @@ namespace TokenHandler
                         expires: expires, 
                         signingCredentials: signingCredentials);
             var tokenString = tokenHandler.WriteToken(token);
-
             return tokenString;
         }
     }

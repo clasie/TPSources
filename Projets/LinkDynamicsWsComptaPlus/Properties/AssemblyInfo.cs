@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LinkDynamicsWsComptaPlus")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("This dll manage Azure calls for CashDisk and BusRelSegmentGroup")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LinkDynamicsWsComptaPlus")]

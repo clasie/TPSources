@@ -6,6 +6,7 @@ using System.Web;
 using System.Configuration;
 using System.Text;
 using TokenHandler.Constants;
+using TokenHandler.Utils;
 
 namespace WSComptaPlus.Models
 {
@@ -17,25 +18,51 @@ namespace WSComptaPlus.Models
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenKey.NormalLogsNameSpace);
         private static readonly log4net.ILog logInOut = log4net.LogManager.GetLogger(TokenKey.WebInOutLogsNameSpace);
+        private static readonly Lazy<ApplicationData> lazy = new Lazy<ApplicationData>(() => new ApplicationData());
 
         private ERPDynamics.ClientConfiguration clientConfiguration = new ERPDynamics.ClientConfiguration();
-        private static readonly Lazy<ApplicationData> lazy = new Lazy<ApplicationData>(() => new ApplicationData());
-        public List<User> listUsersTokenAllowed = new List<User>() { };
+        public  List<User> listUsersTokenAllowed = new List<User>() { };
+        public  int TokenDaysLive;
+        public  string PrivateTokenKey;
+        public  string CodeRetourLoginOk;
+        public  string CodeRetourLoginKo;
+        public string LogConfigurationVerboseNormalNolog;
 
         public static ApplicationData Instance { get { return lazy.Value; } }
-
         private ApplicationData()
         {
-            log.Info("Contructor ApplicationData called.");
             GetEnv();
             FillUpUsersTokenAllowed();
+            GetOtheElementsFromTheConfig();
+        }
+        /// <summary>
+        /// Gather subset of web.config elements
+        /// </summary>
+        private void GetOtheElementsFromTheConfig()
+        {
+            try
+            {
+                TokenDaysLive = Convert.ToInt32(GetEnvironmentConfig(TokenKey.TokenDaysLifeLabel));
+                PrivateTokenKey = GetEnvironmentConfig(TokenKey.PrivateTokenKeyLabel);
+                CodeRetourLoginOk = GetEnvironmentConfig(TokenKey.CodeRetourLoginOk);
+                CodeRetourLoginKo = GetEnvironmentConfig(TokenKey.CodeRetourLoginKO);
+                LogConfigurationVerboseNormalNolog = GetEnvironmentConfig(TokenKey.LogConfigurationVerboseNormalNolog);
+
+            } catch (Exception ex) {
+                log.Error(FormatMessages.getLogMessage(
+                    this.GetType().Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    TokenKey.NoMethodParams,
+                    ex.ToString()));
+                throw ex;
+            }
         }
         #region Attribute - settings
         /// <summary>
         /// Obtenir l'environnement.
         /// </summary>
-        private static string Environment => GetConfig("Environment", "");
-        private static TypeEnvironment EnvironmentEnum => (TypeEnvironment)Enum.Parse(typeof(TypeEnvironment), GetConfig("EnvironmentEnum", ""));
+        private static string Environment => GetConfig(TokenKey.ConfigEnvironnementLabel, "");
+        private static TypeEnvironment EnvironmentEnum => (TypeEnvironment)Enum.Parse(typeof(TypeEnvironment), GetConfig(TokenKey.ConfigEnvironnementEnumLabel, ""));
         /// <summary>
         /// Obtenir les informations de la configuration de l'environnement choisi
         /// </summary>
@@ -51,7 +78,7 @@ namespace WSComptaPlus.Models
         /// Called to trace if config is well read.
         /// </summary>
         /// <param name="message"></param>
-        public void ToLogInfo(string message="Empty") {
+        public void ToLogInfo(string message="Empty") {;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine();
             sb.AppendLine();
@@ -62,6 +89,11 @@ namespace WSComptaPlus.Models
             sb.AppendLine("Environment");
             sb.AppendLine("------------");
             sb.AppendLine(string.Format("Environment: {0} ", Environment));
+            sb.AppendLine(string.Format(" TokenDaysLive: {0}" , TokenDaysLive));
+            sb.AppendLine(string.Format(" PrivateTokenKey: {0}", PrivateTokenKey));
+            sb.AppendLine(string.Format(" CodeRetourLoginOk: {0}", CodeRetourLoginOk));
+            sb.AppendLine(string.Format(" CodeRetourLoginKo: {0}", CodeRetourLoginKo));
+            sb.AppendLine(string.Format(" LogConfigurationVerboseNormalNolog: {0}", LogConfigurationVerboseNormalNolog));
             sb.AppendLine();
             sb.AppendLine("Liste des users dans la config");
             sb.AppendLine("------------------------------");
@@ -71,21 +103,27 @@ namespace WSComptaPlus.Models
             sb.AppendLine();
             sb.AppendLine("clientConfiguration");
             sb.AppendLine("--------------------");
-            sb.AppendLine(" clientConfiguration.UriString: " + clientConfiguration.UriString);
-            sb.AppendLine(" clientConfiguration.ActiveDirectoryResource: " + clientConfiguration.ActiveDirectoryResource);
-            sb.AppendLine(" clientConfiguration.ActiveDirectoryTenant: " + clientConfiguration.ActiveDirectoryTenant);
-            sb.AppendLine(" clientConfiguration.ActiveDirectoryClientAppId: " + clientConfiguration.ActiveDirectoryClientAppId);
-            sb.AppendLine(" clientConfiguration.ActiveDirectoryClientAppSecret: " + clientConfiguration.ActiveDirectoryClientAppSecret);
+            sb.AppendLine(string.Format(" clientConfiguration.UriString: {0}" , clientConfiguration.UriString));
+            sb.AppendLine(string.Format(" clientConfiguration.ActiveDirectoryResource: {0}" , clientConfiguration.ActiveDirectoryResource));
+            sb.AppendLine(string.Format(" clientConfiguration.ActiveDirectoryTenant: {0}" , clientConfiguration.ActiveDirectoryTenant));
+            sb.AppendLine(string.Format(" clientConfiguration.ActiveDirectoryClientAppId: {0}" , clientConfiguration.ActiveDirectoryClientAppId));
+            sb.AppendLine(string.Format(" clientConfiguration.ActiveDirectoryClientAppSecret: {0}" , clientConfiguration.ActiveDirectoryClientAppSecret));
             sb.AppendLine("new values ...");
-            sb.AppendLine(" clientConfiguration.ActiveDirectoryTenantId: " + clientConfiguration.ActiveDirectoryTenantId);
-            sb.AppendLine(" clientConfiguration.D365SalesUri: " + clientConfiguration.D365SalesUri);
-            sb.AppendLine(" clientConfiguration.D365SalesClientId: " + clientConfiguration.D365SalesClientId);
-            sb.AppendLine(" clientConfiguration.D365SalesClientKey: " + clientConfiguration.D365SalesClientKey);
-            sb.AppendLine(" clientConfiguration.ServiceGroup: " + clientConfiguration.ServiceGroup);
-            sb.AppendLine(" clientConfiguration.TLSVersion: " + clientConfiguration.TLSVersion);
+            sb.AppendLine(string.Format(" clientConfiguration.ActiveDirectoryTenantId: {0}" , clientConfiguration.ActiveDirectoryTenantId));
+            sb.AppendLine(string.Format(" clientConfiguration.D365SalesUri: {0}" , clientConfiguration.D365SalesUri));
+            sb.AppendLine(string.Format(" clientConfiguration.D365SalesClientId: {0}" , clientConfiguration.D365SalesClientId));
+            sb.AppendLine(string.Format(" clientConfiguration.D365SalesClientKey: {0}" , clientConfiguration.D365SalesClientKey));
+            sb.AppendLine(string.Format(" clientConfiguration.ServiceGroup: {0}" , clientConfiguration.ServiceGroup));
+            sb.AppendLine(string.Format(" clientConfiguration.TLSVersion: {0}" , clientConfiguration.TLSVersion));
             sb.AppendLine();
             log.Info(sb.ToString());
-
+            /*
+        public  int TokenDaysLive;
+        public  string PrivateTokenKey;
+        public  string CodeRetourLoginOk;
+        public  string CodeRetourLoginKo;
+        public string LogConfigurationVerboseNormalNolog;
+             */
         }
         /// <summary>
         /// Obtenir les informations sur l'environnement.
@@ -159,17 +197,12 @@ namespace WSComptaPlus.Models
         /// </summary>
         /// <param name="usersAllowedToUseServiceString"></param>
         private void ParseUsers(string usersAllowedToUseServiceString) {
-            log.Info("Before ooooooooooooo->>ParseUsers 1.3 " + usersAllowedToUseServiceString);
             string[] arr = usersAllowedToUseServiceString.Split(new[] { ';' },StringSplitOptions.RemoveEmptyEntries);
             // convert to a Dictionary
             var dict = arr.Select(x => x.Split('|')).ToDictionary(i => i[0], i => i[1]);
             foreach (var part in dict) {
                 listUsersTokenAllowed.Add(new User() {Name = part.Key, PassWord = part.Value });
             }
-            foreach (var user in listUsersTokenAllowed) {
-                log.Info(string.Format(" ---> User name: {0}, User pw: {1} ", user.Name, user.PassWord));
-            }
-
         }
     }
 }

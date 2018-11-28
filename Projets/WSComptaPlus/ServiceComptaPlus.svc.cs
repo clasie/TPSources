@@ -60,7 +60,7 @@ namespace WSComptaPlus
         /// <summary>
         /// Obtenir l'environnement.
         /// </summary>
-        private ApplicationData applicationData = ApplicationData.Instance;
+        //private ApplicationData applicationData = ApplicationData.Instance;
         private static string Environment => GetConfig("Environment", "");
         private static TypeEnvironment EnvironmentEnum => (TypeEnvironment)Enum.Parse(typeof(TypeEnvironment), GetConfig("EnvironmentEnum", ""));
         /// <summary>
@@ -322,7 +322,7 @@ namespace WSComptaPlus
         {
             try
             {
-                applicationData.ToLogInfo();
+                ApplicationData.Instance.ToLogInfo();//to debug, can be removed
                 var manageAuthAndToken = new ManageAuthAndToken();
                 return manageAuthAndToken.Login(data);
             }

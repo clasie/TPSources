@@ -4,57 +4,88 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TokenHandler.Constants;
 
 namespace TokenHandler.Utils
 {
     /// <summary>
+    /// 
     /// To help tracing In/Out movements trough the Web service we need to analyse
-    /// and store this trafic, made of list of business objects. Here we will detect
-    /// which instance is going in/out in a dynamic way without knowing  the type 
+    /// and store this trafic made of list of business objects. Here we will detect
+    /// which instance is going in/out in a dynamic reflection way without knowing  the type 
     /// by advance.
+    /// 
     /// </summary>
     public class Reflection
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenKey.NormalLogsNameSpace);
         public static Reflection GetReflection() {
             return new Reflection();
         }
         public string GetValues<T>(List<T> objectPut)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (var elementSup in objectPut)
+            try
             {
-                Type type = elementSup.GetType();
-                List<string> listPropNameValues = new List<string>();
-                foreach (PropertyInfo propertyInfo in type.GetProperties())
+                StringBuilder sb = new StringBuilder();
+                foreach (var elementSup in objectPut)
                 {
-                    if (propertyInfo.CanRead)
+                    Type type = elementSup.GetType();
+                    List<string> listPropNameValues = new List<string>();
+                    foreach (PropertyInfo propertyInfo in type.GetProperties())
                     {
-                        try
+                        if (propertyInfo.CanRead)
                         {
-                            var propName = propertyInfo.Name;
-                            var propValue = propertyInfo.GetValue(elementSup, null);
-                            listPropNameValues.Add(string.Format(" {0} : {1} ", propName, propValue));
-                        }
-                        catch (Exception ex)
-                        {
+                            try
+                            {
+                                var propName = propertyInfo.Name;
+                                var propValue = propertyInfo.GetValue(elementSup, null);
+                                listPropNameValues.Add(string.Format(" {0} : {1} ", propName, propValue));
+                            }
+                            catch (Exception ex)
+                            {
+                                log.Error(FormatMessages.getLogMessage(
+                                    this.GetType().Name,
+                                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                                    string.Concat("Reflection.GetValues : ", elementSup.ToString()),
+                                    ex.ToString()));
+                            }
                         }
                     }
+                    sb.Append(FormatProperties(type.Name, listPropNameValues));
                 }
-                sb.Append(FormatProperties(type.Name, listPropNameValues));
+                return sb.ToString();
             }
-            return sb.ToString();
+            catch (Exception ex) {
+                log.Error(FormatMessages.getLogMessage(
+                    this.GetType().Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    string.Concat("objectPut : ", objectPut.ToString()),
+                    ex.ToString()));
+                return string.Empty;
+            }
         }
         public string FormatProperties(String className, List<string> listNameValue)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine();
-            sb.Append(" Class name: ").Append(className);
-            sb.AppendLine();
-            foreach (var element in listNameValue)
+            try
             {
-                sb.AppendLine(element);
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine();
+                sb.Append(" Class name: ").Append(className);
+                sb.AppendLine();
+                foreach (var element in listNameValue)
+                {
+                    sb.AppendLine(element);
+                }
+                return sb.ToString(); ;
             }
-            return sb.ToString(); ;
+            catch (Exception ex) {
+                log.Error(FormatMessages.getLogMessage(
+                    this.GetType().Name,
+                    System.Reflection.MethodBase.GetCurrentMethod().Name,
+                    string.Concat("className : ", className, "  listNameValue: ", listNameValue.ToString()),
+                    ex.ToString()));
+                return string.Empty;
+            }
         }
     }
 }

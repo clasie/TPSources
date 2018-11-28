@@ -323,9 +323,9 @@ namespace SideWsComptaPlus.Services
            where TResultType : TokenHandler.Models.LoginResponse
            where TRequestContractType : TokenHandler.Models.LoginRequest
         {
-            var attribute = typeof(TRequestContractType).GetCustomAttributes(true).OfType<ServiceRequestAttribute>().FirstOrDefault();
+            var attribute = typeof(TRequestContractType).GetCustomAttributes(true).OfType<TokenHandler.Attributes.ServiceRequestAttribute>().FirstOrDefault();
             //to corrige
-            if (false) //attribute == null)
+            if (attribute == null)
             {
                 //--------------------------------------------------------------
                 // Erreur dans la réponse

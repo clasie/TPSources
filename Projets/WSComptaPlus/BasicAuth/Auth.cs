@@ -23,6 +23,7 @@ namespace WSComptaPlus.BasicAuth
         private User  UserExistsInConfig(User user)
         {
             return ApplicationData.Instance.UserExists(user);
+
         }
     }
 }

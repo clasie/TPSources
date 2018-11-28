@@ -9,11 +9,7 @@ namespace ConsoleTestDebugRAND
 {
     class Program
     {
-        class Test {
-            public int P1 { get; set; }
-            public string P2 { get; set; }
-            public string P3 { get; set; }
-        }
+
         static void Main(string[] args)
         {
             List<Test> testList = new List<Test>() {
@@ -23,6 +19,13 @@ namespace ConsoleTestDebugRAND
             };
             Reflect r = new Reflect();
             var x = r.GetValues(testList);
+        }
+
+        class Test
+        {
+            public int P1 { get; set; }
+            public string P2 { get; set; }
+            public string P3 { get; set; }
         }
         public class Reflect {
             public string GetValues<T>(List<T> objectPut)

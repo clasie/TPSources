@@ -24,6 +24,12 @@ namespace TokenHandler.Utils
             sb.AppendLine().Append(" . Exception: ").Append(exceptionMessage);
             return sb.ToString();
         }
+        /// <summary>
+        /// Helper to format reflection
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="reflectedInfo"></param>
+        /// <returns></returns>
         public static string GetFormatedReflection(string title, string reflectedInfo)
         {
             StringBuilder sb = new StringBuilder();
