@@ -52,7 +52,6 @@ namespace WSComptaPlus.CustomBehaivious
         /// <returns></returns>
         public object BeforeCall(string operationName, object[] inputs)
         {
-
             logTokenAccess.Info("///////Start//////////BeforeCall////////////////////////");
             try
             {
