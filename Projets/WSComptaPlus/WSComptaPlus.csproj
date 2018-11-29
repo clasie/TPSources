@@ -122,6 +122,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PublishToLocalIIS.pubxml" />
+    <None Include="Properties\PublishProfiles\WebServiceComptaPlus-Int.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

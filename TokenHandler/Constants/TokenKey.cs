@@ -37,8 +37,9 @@ namespace TokenHandler.Constants
         public const string TokenPrefix = "^Bearer ";
         public const string TokenPrefixRaw = "Bearer ";
         //Generated Token for test purposes
-        public const string GeneratedKeyToTest = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Inh4eCIsIm5iZiI6MTU0Mjk3MzY0NywiZXhwIjoxNTQzNTc4NDQ3LCJpYXQiOjE1NDI5NzM2NDcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMTkxIn0.pbEv8JYFVmp74pm7-XsBsPSLjpdzdGrf5Vc5451wM-I";
-        public const string GeneratedKeyToTestWithHeader = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Inh4eCIsIm5iZiI6MTU0Mjk3MzY0NywiZXhwIjoxNTQzNTc4NDQ3LCJpYXQiOjE1NDI5NzM2NDcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMTkxIn0.pbEv8JYFVmp74pm7-XsBsPSLjpdzdGrf5Vc5451wM-I";
+        //enabled for 100 days (from 11/29/2018 to + 100 days)
+        public const string GeneratedKeyToTest = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIxIiwibmJmIjoxNTQzNDg4MTE0LCJleHAiOjE1NDQwOTI5MTQsImlhdCI6MTU0MzQ4ODExNCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDE5MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEifQ.3z1BdSbliYT1GTdNZvwknm9giKNidwNG9Y4nPjrhqG4";
+        public const string GeneratedKeyToTestWithHeader = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIxIiwibmJmIjoxNTQzNDg4MTE0LCJleHAiOjE1NDQwOTI5MTQsImlhdCI6MTU0MzQ4ODExNCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDE5MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEifQ.3z1BdSbliYT1GTdNZvwknm9giKNidwNG9Y4nPjrhqG4";
         //Prefix expected in header
         public const string PrefixSetByTheCallerBeforeTheKey = "Bearer ";
         public const string MessageTokenForUser = "New token created";
@@ -48,7 +49,7 @@ namespace TokenHandler.Constants
         //Error messages
         public const string ServicErrorMinimalMessage = "Error occured on service";     
         //public const string CodeUnknownUser = "10001";
-        public const string MessageNoTokenForUnknownUser = "No token, the user is unknown";
+        public const string MessageNoTokenForUnknownUser = "The user is unknown";
         public const string TokenInvalid = "Token not valid.";
         public const string TokenNotFound = "Token not found.";
         public const string CustomExceptionLabel = "Custom exception";

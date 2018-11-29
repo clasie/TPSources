@@ -7,8 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
 using System.Web;
 using TokenHandler;
+using TokenHandler.CertificateWorkAround;
 using TokenHandler.Constants;
 using TokenHandler.Models;
 using ClientConfiguration = SideWsComptaPlus.Tools.ClientConfiguration;
@@ -68,6 +70,8 @@ namespace SideWsComptaPlus.Services
                 //httpWebRequest.Timeout = (120);
                 httpWebRequest.ContentType = "application/json; charset=utf-8; ";
                 httpWebRequest.Method = "POST";
+                httpWebRequest.Headers.Add("Authorization", "Bearer " + TokenKey.GeneratedKeyToTest); // "0123456789");
+
                 var json =  JsonHelp.JsonSerialize(dRequest);
 
                 // Envoyer les données au service.
@@ -207,10 +211,10 @@ namespace SideWsComptaPlus.Services
                 //httpWebRequest.Timeout = (120);
                 httpWebRequest.ContentType = "application/json; charset=utf-8; ";
                 httpWebRequest.Method = "POST";
+                //httpWebRequest.Headers.Add("Authorization", "Bearer " + "0123456789"); 
                 httpWebRequest.Headers.Add("Authorization", "Bearer " + TokenKey.GeneratedKeyToTest); // "0123456789");
-                //httpWebRequest.Headers.Add("From", "user@example.com");
 
-               var json = JsonHelp.JsonSerialize(dRequest);
+                var json = JsonHelp.JsonSerialize(dRequest);
 
                 // Envoyer les données au service.
                 using (var streamWriter =
@@ -345,12 +349,27 @@ namespace SideWsComptaPlus.Services
 
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(_clientConfiguration.UriString + "\\" + "login/ws");
+                //System.Net.ServicePointManager.ServerCertificateValidationCallback +=
+                //(se, cert, chain, sslerror) =>
+                //{
+                //    return true;
+                //};
+
+                //ServicePointManager.ServerCertificateValidationCallback = new
+                //RemoteCertificateValidationCallback
+                //(
+                //   delegate { return true; }
+                //);
+
+                //ServicePointManager.CertificatePolicy = new CustomCertificatePolicy();
+
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(_clientConfiguration.UriString + "\\" + attribute.Url); // "login/ws");
                 //httpWebRequest.Timeout = (httpWebRequest.Timeout * 10);
                 //httpWebRequest.Timeout = (120);
                 httpWebRequest.ContentType = "application/json; charset=utf-8; ";
                 httpWebRequest.Method = "POST";
-                httpWebRequest.Headers.Add("Authorization", "Bearer " + "123456789");
+                //httpWebRequest.Headers.Add("Authorization", "Bearer " + "0123456789"); 
+                //httpWebRequest.Headers.Add("Authorization", "Bearer " + TokenKey.GeneratedKeyToTest); // "0123456789");
                 var json = JsonHelp.JsonSerialize(dRequest);
 
                 // Envoyer les données au service.

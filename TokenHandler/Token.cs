@@ -47,6 +47,7 @@ namespace TokenHandler
     public class Token
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenKey.NormalLogsNameSpace);
+        private static readonly log4net.ILog logTokenAccess = log4net.LogManager.GetLogger(TokenKey.TokenAccessNameSpace);
         /// <summary>
         /// Get the complete Authorization string from the header if any.
         /// </summary>
@@ -83,8 +84,9 @@ namespace TokenHandler
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public TokenHandler.Models.TokenCheckResult CheckTokenValidity(string token, string privateKey)
+        public TokenHandler.Models.TokenCheckResult CheckTokenValidity(string tokenToChallange, string privateKey)
         {
+            logTokenAccess.Info("CheckTokenValidity 1.0");
             TokenHandler.Models.TokenCheckResult tokenCheckResult = new TokenHandler.Models.TokenCheckResult();
             try
             {
@@ -102,8 +104,10 @@ namespace TokenHandler
                     LifetimeValidator = this.LifetimeValidator,
                     IssuerSigningKey = securityKey
                 };
-                handler.ValidateToken(TokenHandler.Constants.TokenKey.GeneratedKeyToTest, 
-                    validationParameters, out securityToken);
+                handler.ValidateToken(
+                    tokenToChallange, 
+                    validationParameters, 
+                    out securityToken);
                 tokenCheckResult.IsValidKey = true;
             }
             catch (Microsoft.IdentityModel.Tokens.SecurityTokenValidationException e)

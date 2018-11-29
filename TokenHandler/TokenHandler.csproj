@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ServiceRequestAttribute.cs" />
+    <Compile Include="CertificateWorkAround\CustomCertificatePolicy.cs" />
     <Compile Include="Constants\TokenKey.cs" />
     <Compile Include="CustomException\InvalidTokenException.cs" />
     <Compile Include="Models\TokenCheckResult.cs" />
