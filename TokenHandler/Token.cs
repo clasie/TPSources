@@ -40,6 +40,8 @@ namespace TokenHandler
     /// 
     /// 3- How to install/uninstall jwt ?
     /// 
+    /// Install-Package JWT -Version 4.0.0
+    /// 
     /// uninstall-package newtonsoft.json -force
     /// install-package newtonsoft.json
     /// 

@@ -363,7 +363,12 @@ namespace SideWsComptaPlus.Services
 
                 //ServicePointManager.CertificatePolicy = new CustomCertificatePolicy();
 
+                //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                //ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(_clientConfiguration.UriString + "\\" + attribute.Url); // "login/ws");
+
                 //httpWebRequest.Timeout = (httpWebRequest.Timeout * 10);
                 //httpWebRequest.Timeout = (120);
                 httpWebRequest.ContentType = "application/json; charset=utf-8; ";

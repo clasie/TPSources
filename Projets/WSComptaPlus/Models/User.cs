@@ -16,5 +16,5 @@ namespace WSComptaPlus.Models
         public string PassWord { get; set; }
         public bool Exists { get; set; }
         public string Token { get; set; }
-}
+    }
 }

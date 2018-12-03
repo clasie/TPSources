@@ -11,13 +11,12 @@ using System.Threading.Tasks;
 namespace ConsoleTestLinkDynamicsWsComptaPlus
 {
     /// <summary>
-    /// Console to test LinkDynamicsWsComptaPlus test git
+    /// Console to test LinkDynamicsWsComptaPlus
     /// </summary>
     class Program
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(TokenHandler.Constants.TokenKey.NormalLogsNameSpace);
-        private static readonly log4net.ILog logInOut = log4net.LogManager.GetLogger(TokenHandler.Constants.TokenKey.WebInOutLogsNameSpace);
-        public static object TokenKey { get; private set; }
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         #region catch env data
         private static string Environment
         {
@@ -97,7 +96,8 @@ namespace ConsoleTestLinkDynamicsWsComptaPlus
                  };
 
                 var listspCashDiscs = LinkDynamics.CallDynamicsCashDisc(clientConfiguration, listCashDisc);
-                foreach (var element in listspCashDiscs) {
+                foreach (var element in listspCashDiscs)
+                {
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("listspCashDisc.Code : " + element.Code);
                     sb.AppendLine("listspCashDisc.Code : " + element.DynamicsOprNumber);

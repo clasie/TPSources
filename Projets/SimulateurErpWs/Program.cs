@@ -4,7 +4,7 @@ using SideWsComptaPlus.Services;
 using SideWsComptaPlus.Tools;
 using System;
 using System.Collections.Generic;
-
+using System.Net;
 
 namespace SimulateurErpWs
 {
@@ -52,6 +52,8 @@ namespace SimulateurErpWs
         /// </summary>
         private static void Main()
         {
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
             #region Initialisation config
             // Déterminer l'environnement de travail via paramètres config.
