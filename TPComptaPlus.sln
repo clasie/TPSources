@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenHandler", "TokenHandle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestDebugRAND", "ConsoleTestDebugRAND\ConsoleTestDebugRAND.csproj", "{A30680C5-AEB7-40E6-B0E3-37B5070357EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriorityQueues", "Projets\PriorityQueues\PriorityQueues.csproj", "{9A3D68CC-4A6A-49F1-993F-B1C9A61E343B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{A30680C5-AEB7-40E6-B0E3-37B5070357EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30680C5-AEB7-40E6-B0E3-37B5070357EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A30680C5-AEB7-40E6-B0E3-37B5070357EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A3D68CC-4A6A-49F1-993F-B1C9A61E343B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A3D68CC-4A6A-49F1-993F-B1C9A61E343B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A3D68CC-4A6A-49F1-993F-B1C9A61E343B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A3D68CC-4A6A-49F1-993F-B1C9A61E343B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
